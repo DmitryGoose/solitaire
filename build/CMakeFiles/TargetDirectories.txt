@@ -1,0 +1,3 @@
+/home/leo/solitaire/build/CMakeFiles/Solitaire.dir
+/home/leo/solitaire/build/CMakeFiles/edit_cache.dir
+/home/leo/solitaire/build/CMakeFiles/rebuild_cache.dir
