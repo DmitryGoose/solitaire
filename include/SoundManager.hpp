@@ -47,6 +47,25 @@ public:
         }
     }
 
+    // Добавлен метод для воспроизведения звука по имени файла
+    void playSound(const std::string& soundName) {
+        if (soundName == "card_place") {
+            playSound(SoundEffect::CARD_PLACE);
+        }
+        else if (soundName == "card_flip") {
+            playSound(SoundEffect::CARD_FLIP);
+        }
+        else if (soundName == "card_shuffle") {
+            playSound(SoundEffect::CARD_SHUFFLE);
+        }
+        else if (soundName == "victory") {
+            playSound(SoundEffect::VICTORY);
+        }
+        else if (soundName == "click") {
+            playSound(SoundEffect::CLICK);
+        }
+    }
+
     void setVolume(float volume) {
         m_volume = volume;
         for (auto& sound : m_soundBuffers) {

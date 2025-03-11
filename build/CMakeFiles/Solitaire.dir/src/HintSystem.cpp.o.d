@@ -263,4 +263,5 @@ CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o: \
  /home/leo/solitaire/include/Game.hpp \
  /home/leo/solitaire/include/PopupImage.hpp /usr/include/c++/13/stack \
  /usr/include/c++/13/deque /usr/include/c++/13/bits/stl_deque.h \
- /usr/include/c++/13/bits/deque.tcc /usr/include/c++/13/bits/stl_stack.h
+ /usr/include/c++/13/bits/deque.tcc /usr/include/c++/13/bits/stl_stack.h \
+ /home/leo/solitaire/include/Context.hpp

@@ -31,10 +31,6 @@ Pile::Pile(PileType type, const sf::Vector2f& position)
     }
 }
 
-PileType Pile::getType() const {
-    return m_type;
-}
-
 sf::Vector2f Pile::getPosition() const {
     return m_position;
 }
@@ -55,6 +51,10 @@ void Pile::addCard(std::shared_ptr<Card> card) {
     }
 
     m_cards.push_back(card);
+
+    // Устанавливаем указатель на стопку для карты
+    card->setPile(this);
+
     update();
 }
 
@@ -72,6 +72,9 @@ std::shared_ptr<Card> Pile::removeTopCard() {
                   << " из стопки типа " << static_cast<int>(m_type) << std::endl;
     }
 
+    // Очищаем указатель на стопку в карте
+    card->setPile(nullptr);
+
     return card;
 }
 
@@ -83,6 +86,9 @@ std::vector<std::shared_ptr<Card>> Pile::removeCards(size_t index) {
     std::vector<std::shared_ptr<Card>> removedCards;
     for (size_t i = index; i < m_cards.size(); ++i) {
         removedCards.push_back(m_cards[i]);
+
+        // Очищаем указатель на стопку в каждой карте
+        m_cards[i]->setPile(nullptr);
     }
 
     if (Card::isDebugMode()) {
@@ -98,6 +104,10 @@ std::vector<std::shared_ptr<Card>> Pile::removeCards(size_t index) {
     }
 
     m_cards.erase(m_cards.begin() + index, m_cards.end());
+
+    // Проверяем, нужно ли перевернуть новую верхнюю карту
+    updateAfterCardRemoval();
+
     return removedCards;
 }
 
@@ -293,4 +303,137 @@ void Pile::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         debugRect.setOutlineThickness(1.0f);
         target.draw(debugRect, states);
     }
+}
+
+// Реализация новых методов для функции автоматического перемещения
+
+bool Pile::isTopCard(const Card* card) const {
+    if (m_cards.empty()) {
+        return false;
+    }
+
+    // Проверяем, является ли указанная карта верхней в стопке
+    return m_cards.back().get() == card;
+}
+
+bool Pile::canMoveMultipleCards() const {
+    // Только в игровых стопках (tableau) можно перемещать несколько карт сразу
+    return m_type == PileType::TABLEAU;
+}
+
+void Pile::getCardsAbove(Card* card, std::vector<Card*>& cards) const {
+    cards.clear();
+
+    // Находим индекс указанной карты
+    int cardIndex = -1;
+    for (size_t i = 0; i < m_cards.size(); ++i) {
+        if (m_cards[i].get() == card) {
+            cardIndex = static_cast<int>(i);
+            break;
+        }
+    }
+
+    if (cardIndex == -1) {
+        return; // Карта не найдена в стопке
+    }
+
+    // Добавляем все карты от найденной до верхней
+    for (size_t i = cardIndex; i < m_cards.size(); ++i) {
+        cards.push_back(m_cards[i].get());
+    }
+}
+
+std::shared_ptr<Card> Pile::findSharedPtrByRawPtr(const Card* rawPtr) const {
+    for (const auto& sharedPtr : m_cards) {
+        if (sharedPtr.get() == rawPtr) {
+            return sharedPtr;
+        }
+    }
+    return nullptr;
+}
+
+bool Pile::addCards(const std::vector<Card*>& cards) {
+    if (cards.empty()) {
+        return false;
+    }
+
+    // Проверяем, что можно добавить первую карту
+    std::shared_ptr<Card> firstCardShared = cards[0]->getPile()->findSharedPtrByRawPtr(cards[0]);
+    if (!firstCardShared || !canAddCard(firstCardShared)) {
+        return false;
+    }
+
+    // Добавляем все карты в стопку
+    for (Card* rawCard : cards) {
+        std::shared_ptr<Card> cardShared = rawCard->getPile()->findSharedPtrByRawPtr(rawCard);
+        if (cardShared) {
+            // Перемещаем карту в эту стопку
+            cardShared->setPile(this);
+            m_cards.push_back(cardShared);
+        }
+    }
+
+    // Обновляем позиции всех карт
+    update();
+
+    return true;
+}
+
+void Pile::removeCards(const std::vector<Card*>& cards) {
+    if (cards.empty()) {
+        return;
+    }
+
+    bool anyCardRemoved = false; // Добавляем флаг для отслеживания успешного удаления
+
+    // Удаляем каждую карту из списка
+    for (Card* rawCard : cards) {
+        auto it = std::find_if(m_cards.begin(), m_cards.end(),
+            [rawCard](const std::shared_ptr<Card>& sharedCard) {
+                return sharedCard.get() == rawCard;
+            });
+
+        if (it != m_cards.end()) {
+            // Удаляем связь карты с этой стопкой
+            (*it)->setPile(nullptr);
+
+            // Удаляем карту из списка
+            m_cards.erase(it);
+            anyCardRemoved = true; // Отмечаем, что карта была удалена
+        }
+    }
+
+    // Обновляем стопку после удаления карт ТОЛЬКО если хотя бы одна карта была удалена
+    if (anyCardRemoved) {
+        updateAfterCardRemoval();
+    } else {
+        // Если карты не были удалены, просто обновляем позиции существующих карт
+        update();
+    }
+}
+
+void Pile::updateAfterCardRemoval() {
+    // Если стопка не пуста и верхняя карта лежит рубашкой вверх, переворачиваем её
+    if (!m_cards.empty() && !m_cards.back()->isFaceUp() &&
+        m_type == PileType::TABLEAU) {
+        m_cards.back()->flip();
+    }
+
+    // Обновляем позиции всех карт
+    update();
+}
+
+bool Pile::canAcceptCard(const Card* card) const {
+    if (!card || card->getPile() == nullptr) {
+        return false;
+    }
+
+    // Находим shared_ptr для указанной карты
+    std::shared_ptr<Card> cardShared = card->getPile()->findSharedPtrByRawPtr(card);
+    if (!cardShared) {
+        return false;
+    }
+
+    // Используем существующую стратегию валидации
+    return canAddCard(cardShared);
 }

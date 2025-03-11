@@ -7,8 +7,9 @@
 #include "Pile.hpp"
 #include "AnimationManager.hpp"
 
-// Предварительное объявление класса Game
+// Предварительное объявление классов
 class Game;
+class Context;
 
 // Структура для хранения информации о подсказке
 struct Hint {
@@ -22,6 +23,9 @@ class HintSystem {
 public:
     HintSystem(Game& game);
 
+    // Установка контекста для расширенной функциональности
+    void setContext(Context* context) { m_context = context; }
+
     // Получение списка возможных ходов
     std::vector<Hint> getHints();
 
@@ -31,11 +35,15 @@ public:
     // Подсветка карты для подсказки
     void highlightHint(const Hint& hint);
 
+    // Метод для поддержки автоматического перемещения по двойному клику
+    std::vector<Pile*> findPossibleMoves(const Card* card) const;
+
 private:
     // Добавление возможных подсказок для конкретной карты
     void addCardHints(std::vector<Hint>& hints, std::shared_ptr<Card> card, std::shared_ptr<Pile> sourcePile);
 
     Game& m_game;
+    Context* m_context = nullptr; // Указатель на контекст (может быть nullptr)
 };
 
 #endif // HINT_SYSTEM_HPP

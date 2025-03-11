@@ -2,15 +2,15 @@
     "achievements": [
         {
             "id": "first_win",
-            "unlocked": false
+            "unlocked": true
         },
         {
             "id": "5_wins",
-            "unlocked": false
+            "unlocked": true
         },
         {
             "id": "10_wins",
-            "unlocked": false
+            "unlocked": true
         },
         {
             "id": "fast_win",
@@ -18,17 +18,17 @@
         },
         {
             "id": "high_score",
-            "unlocked": false
+            "unlocked": true
         },
         {
             "id": "pro_player",
-            "unlocked": false
+            "unlocked": true
         }
     ],
-    "bestScore": 0,
-    "fastestWin": 999999,
-    "gamesPlayed": 0,
-    "gamesWon": 0,
+    "bestScore": 1610,
+    "fastestWin": 400,
+    "gamesPlayed": 1,
+    "gamesWon": 21,
     "totalCards": 0,
-    "totalMoves": 0
+    "totalMoves": 122
 }

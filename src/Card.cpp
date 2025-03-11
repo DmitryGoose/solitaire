@@ -1,4 +1,9 @@
 #include "Card.hpp"
+#include "Pile.hpp"
+#include "Context.hpp"
+#include "HintSystem.hpp"
+#include "SoundManager.hpp"
+#include "ScoreSystem.hpp"
 #include <iostream>
 
 // Инициализация статических переменных
@@ -55,6 +60,7 @@ Card::Card(Suit suit, Rank rank)
     , m_rank(rank)
     , m_faceUp(false)
     , m_dragging(false)
+    , m_pile(nullptr)
 {
     // Настройка спрайта лицевой стороны
     m_frontSprite.setTexture(s_cardTexture);
@@ -124,7 +130,7 @@ bool Card::isFaceUp() const {
 bool Card::isRed() const {
     // ИСПРАВЛЕНО: Масти 1 (Буби) и 2 (Черви) - красные
     int suitValue = static_cast<int>(m_suit);
-    return suitValue == 1 || suitValue == 2;
+    return suitValue == 0 || suitValue == 1; // Hearts и Diamonds
 }
 
 void Card::flip() {
@@ -178,6 +184,86 @@ void Card::setDragging(bool dragging) {
 
 bool Card::isDragging() const {
     return m_dragging;
+}
+
+void Card::setPile(Pile* pile) {
+    m_pile = pile;
+}
+
+Pile* Card::getPile() const {
+    return m_pile;
+}
+
+bool Card::isVisible() const {
+    return m_faceUp && m_pile != nullptr;
+}
+
+bool Card::canBeMoved() const {
+    if (!isVisible()) {
+        return false;
+    }
+
+    // Карта может быть перемещена, если она видима и
+    // либо это верхняя карта в стопке, либо стопка позволяет перемещать группы карт
+    return m_pile->isTopCard(this) || m_pile->canMoveMultipleCards();
+}
+
+bool Card::autoMove(Context& context) {
+    if (!isVisible() || !canBeMoved()) {
+        return false;
+    }
+
+    // Используем систему подсказок для поиска возможных ходов
+    HintSystem& hintSystem = context.getHintSystem();
+    std::vector<Pile*> possibleMoves = hintSystem.findPossibleMoves(this);
+
+    // Проверяем возможные перемещения в приоритетном порядке
+    // Сначала пробуем переместить в фундаментные стопки
+    for (auto pile : possibleMoves) {
+        if (pile->getPileType() == PileType::FOUNDATION && pile->canAcceptCard(this)) {
+            return moveCardTo(pile, context);
+        }
+    }
+
+    // Затем пробуем найти перемещения в игровые стопки
+    for (auto pile : possibleMoves) {
+        if (pile->getPileType() == PileType::TABLEAU && pile->canAcceptCard(this)) {
+            return moveCardTo(pile, context);
+        }
+    }
+
+    return false;
+}
+
+bool Card::moveCardTo(Pile* targetPile, Context& context) {
+    if (!targetPile || !m_pile) {
+        return false;
+    }
+
+    // Готовим список карт для перемещения (текущая и все карты выше неё)
+    std::vector<Card*> cardsToMove;
+    m_pile->getCardsAbove(this, cardsToMove);
+
+    // Запоминаем текущую стопку карты
+    Pile* sourcePile = m_pile;
+
+    // Выполняем перемещение
+    if (targetPile->addCards(cardsToMove)) {
+        // Удаляем карты из исходной стопки (это уже вызывает updateAfterCardRemoval внутри)
+        sourcePile->removeCards(cardsToMove);
+
+        // Воспроизводим звук перемещения карты
+        context.getSoundManager().playSound(SoundEffect::CARD_PLACE);
+
+        // Обновляем очки
+        context.getScoreSystem().addMovePoints(1);
+
+        // Не нужно повторно вызывать updateAfterCardRemoval, так как он уже вызван в removeCards
+
+        return true;
+    }
+
+    return false;
 }
 
 void Card::draw(sf::RenderTarget& target, sf::RenderStates states) const {

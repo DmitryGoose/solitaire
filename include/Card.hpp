@@ -3,6 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <vector>
+
+// Объявления классов для избежания циклических зависимостей
+class Pile;
+class Context;
 
 enum class Suit {
     HEARTS,
@@ -43,6 +48,16 @@ public:
     void setDragging(bool dragging);
     bool isDragging() const;
 
+    // Методы для работы со стопкой
+    void setPile(Pile* pile);
+    Pile* getPile() const;
+    bool isVisible() const;
+    bool canBeMoved() const;
+
+    // Методы для автоматического перемещения карт
+    bool autoMove(Context& context);
+    bool moveCardTo(Pile* targetPile, Context& context);
+
     // Статические члены для работы с текстурой карт
     static bool loadTextures(const std::string& cardsPath, const std::string& backPath);
     static void unloadTextures();
@@ -65,6 +80,7 @@ private:
     Rank m_rank;
     bool m_faceUp;
     bool m_dragging;
+    Pile* m_pile;  // Указатель на стопку, которой принадлежит карта
 
     sf::Sprite m_frontSprite;
     sf::Sprite m_backSprite;

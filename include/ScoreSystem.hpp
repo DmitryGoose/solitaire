@@ -45,6 +45,17 @@ public:
         }
     }
 
+    // Новый метод для поддержки автоматического перемещения по двойному клику
+    void addMovePoints(int points) {
+        // Добавляем базовые очки за ход
+        m_score += points;
+
+        // Уведомляем об изменении счета
+        if (m_scoreCallback) {
+            m_scoreCallback(m_score);
+        }
+    }
+
     // Бонусные очки за завершение игры
     void addCompletionBonus(int secondsElapsed) {
         // Бонус за скорость: 700000 / время в секундах

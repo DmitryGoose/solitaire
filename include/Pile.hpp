@@ -7,6 +7,9 @@
 #include <functional>
 #include <iostream>
 
+// Предварительное объявление класса Card для избежания циклических зависимостей
+class Card;
+
 enum class PileType {
     STOCK,
     WASTE,
@@ -32,7 +35,7 @@ class Pile : public sf::Drawable {
 public:
     Pile(PileType type, const sf::Vector2f& position);
 
-    PileType getType() const;
+    PileType getType() const { return m_type; }  // Для обратной совместимости
     sf::Vector2f getPosition() const;
     bool isEmpty() const;
     size_t getCardCount() const;
@@ -54,6 +57,19 @@ public:
     // Сеттеры для стратегий (паттерн Стратегия)
     void setLayoutStrategy(std::unique_ptr<LayoutStrategy> strategy);
     void setValidationStrategy(std::unique_ptr<ValidationStrategy> strategy);
+
+    // Новые методы для поддержки функции автоматического перемещения карт
+    PileType getPileType() const { return m_type; }
+    bool isTopCard(const Card* card) const;
+    bool canMoveMultipleCards() const;
+    void getCardsAbove(Card* card, std::vector<Card*>& cards) const;
+    bool addCards(const std::vector<Card*>& cards);
+    void removeCards(const std::vector<Card*>& cards);
+    void updateAfterCardRemoval();
+
+    // Методы для конвертации между сырыми указателями и shared_ptr
+    std::shared_ptr<Card> findSharedPtrByRawPtr(const Card* rawPtr) const;
+    bool canAcceptCard(const Card* card) const;
 
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

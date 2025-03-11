@@ -1,5 +1,6 @@
 #include "HintSystem.hpp"
 #include "Game.hpp"
+#include "Context.hpp"
 
 HintSystem::HintSystem(Game& game) : m_game(game) {}
 
@@ -110,4 +111,30 @@ void HintSystem::addCardHints(std::vector<Hint>& hints, std::shared_ptr<Card> ca
             hints.push_back(hint);
         }
     }
+}
+
+std::vector<Pile*> HintSystem::findPossibleMoves(const Card* card) const {
+    std::vector<Pile*> possibleMoves;
+
+    if (!card || !card->isFaceUp() || !card->getPile()) {
+        return possibleMoves;
+    }
+
+    // Проверяем все стопки foundation из Game
+    for (size_t i = 0; i < m_game.getFoundationPilesCount(); ++i) {
+        auto targetPile = m_game.getFoundationPile(i);
+        if (targetPile->canAcceptCard(card)) {
+            possibleMoves.push_back(targetPile.get());
+        }
+    }
+
+    // Проверяем все стопки tableau из Game
+    for (size_t i = 0; i < m_game.getTableauPilesCount(); ++i) {
+        auto targetPile = m_game.getTableauPile(i);
+        if (targetPile.get() != card->getPile() && targetPile->canAcceptCard(card)) {
+            possibleMoves.push_back(targetPile.get());
+        }
+    }
+
+    return possibleMoves;
 }
