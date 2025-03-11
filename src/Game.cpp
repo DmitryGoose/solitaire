@@ -337,9 +337,6 @@ void Game::handleMousePressed(const sf::Vector2f& position) {
     if (clickedCard && clickedCard->isFaceUp()) {
         float timeSinceLastClick = m_doubleClickClock.getElapsedTime().asSeconds();
 
-        // Отладочный вывод для диагностики
-        std::cout << "Клик по карте, время с последнего клика: " << timeSinceLastClick << "с" << std::endl;
-
         if (m_lastClickedCard == clickedCard && timeSinceLastClick < DOUBLE_CLICK_THRESHOLD) {
             std::cout << "Обнаружен двойной клик!" << std::endl;
 
