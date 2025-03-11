@@ -149,6 +149,7 @@ public:
     void useHint();
 
 private:
+    static constexpr float DOUBLE_CLICK_THRESHOLD = 0.3f;
     bool shouldAutoMoveAceToFoundation(std::shared_ptr<Card> card);
     std::shared_ptr<Pile> findFoundationForAce();
     bool tryAutoMoveAceToFoundation(std::shared_ptr<Card> card, std::shared_ptr<Pile> sourcePile);
@@ -156,6 +157,9 @@ private:
     void createCards();
     void dealCards();
     bool checkVictory() const;
+
+    // Метод для перемещения карты с управляемым переворотом следующей карты
+    void moveCardWithFlip(std::shared_ptr<Card> card, std::shared_ptr<Pile> sourcePile, std::shared_ptr<Pile> targetPile);
 
     std::vector<std::shared_ptr<Pile>> m_piles;
     std::shared_ptr<Pile> m_stockPile;
@@ -179,6 +183,10 @@ private:
 
     // Всплывающие изображения
     PopupImage m_popupImage;
+
+    // Поддержка двойного клика
+    sf::Clock m_doubleClickClock;
+    std::shared_ptr<Card> m_lastClickedCard;
 };
 
 #endif // GAME_HPP

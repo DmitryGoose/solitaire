@@ -1,4 +1,3 @@
-// Game.cpp
 #include "Game.hpp"
 #include "GameTimer.hpp"
 #include "ScoreSystem.hpp"
@@ -107,7 +106,9 @@ void MoveCardsCommand::undo() {
 }
 
 Game::Game()
-    : m_dragSourcePile(nullptr)
+    : m_dragSourcePile(nullptr),
+      m_lastClickedCard(nullptr)
+
 {
     initialize();
 
@@ -131,6 +132,10 @@ void Game::initialize() {
 
     // Раздаем карты
     dealCards();
+
+    // Сбрасываем переменные двойного клика
+    m_lastClickedCard = nullptr;
+    m_doubleClickClock.restart();
 }
 
 void Game::createPiles() {
@@ -201,6 +206,16 @@ void Game::dealCards() {
                 card->flip(); // Переворачиваем верхнюю карту
             }
             m_tableauPiles[i]->addCard(card);
+        }
+    }
+}
+
+void Game::handleMouseMoved(const sf::Vector2f& position) {
+    // Обновляем позиции перетаскиваемых карт
+    if (!m_draggedCards.empty()) {
+        for (size_t i = 0; i < m_draggedCards.size(); ++i) {
+            float yOffset = i * 30.0f; // Вертикальное смещение для каскада карт
+            m_draggedCards[i]->setPosition(position.x - m_dragOffset.x, position.y - m_dragOffset.y + yOffset);
         }
     }
 }
@@ -305,6 +320,120 @@ void Game::handleMousePressed(const sf::Vector2f& position) {
         return;
     }
 
+    // Ищем карту под курсором
+    std::shared_ptr<Card> clickedCard = nullptr;
+    std::shared_ptr<Pile> cardPile = nullptr;
+
+    for (const auto& pile : m_piles) {
+        size_t cardIndex = pile->getCardIndex(position);
+        if (cardIndex < pile->getCardCount()) {
+            clickedCard = pile->getCardAt(cardIndex);
+            cardPile = pile;
+            break;
+        }
+    }
+
+    // Проверяем двойной клик на открытой карте
+    if (clickedCard && clickedCard->isFaceUp()) {
+        float timeSinceLastClick = m_doubleClickClock.getElapsedTime().asSeconds();
+
+        // Отладочный вывод для диагностики
+        std::cout << "Клик по карте, время с последнего клика: " << timeSinceLastClick << "с" << std::endl;
+
+        if (m_lastClickedCard == clickedCard && timeSinceLastClick < DOUBLE_CLICK_THRESHOLD) {
+            std::cout << "Обнаружен двойной клик!" << std::endl;
+
+            bool moved = false;
+
+            // 1. Сначала пробуем перемещение в фундамент (более приоритетно)
+            for (auto& foundation : m_foundationPiles) {
+                if (foundation->canAddCard(clickedCard)) {
+                    // Удаляем карту из исходной стопки без автоматического переворота
+                    cardPile->removeTopCard();
+
+                    // Добавляем в целевую стопку
+                    foundation->addCard(clickedCard);
+
+                    // Теперь вручную проверяем, нужно ли перевернуть следующую карту
+                    if (cardPile->getType() == PileType::TABLEAU && !cardPile->isEmpty()) {
+                        auto topCard = cardPile->getTopCard();
+                        if (!topCard->isFaceUp()) {
+                            topCard->flip();
+                        }
+                    }
+
+                    // Звуковые эффекты и очки
+                    SoundManager::getInstance().playSound(SoundEffect::CARD_PLACE);
+                    if (m_scoreSystem) {
+                        m_scoreSystem->calculateMoveScore(clickedCard, cardPile, foundation);
+                    }
+                    StatsManager::getInstance().incrementMoves();
+
+                    // Сохраняем для отмены
+                    auto command = std::make_unique<MoveCardCommand>(this, clickedCard, cardPile, foundation);
+                    m_undoStack.push(std::move(command));
+
+                    std::cout << "Автоматически перемещено в фундамент" << std::endl;
+                    moved = true;
+                    break;
+                }
+            }
+
+            // 2. Если не переместили в фундамент, пробуем в tableau
+            if (!moved) {
+                for (auto& tableau : m_tableauPiles) {
+                    if (tableau != cardPile && tableau->canAddCard(clickedCard)) {
+                        // Удаляем карту из исходной стопки без автоматического переворота
+                        cardPile->removeTopCard();
+
+                        // Добавляем в целевую стопку
+                        tableau->addCard(clickedCard);
+
+                        // Вручную проверяем, нужно ли перевернуть следующую карту
+                        if (cardPile->getType() == PileType::TABLEAU && !cardPile->isEmpty()) {
+                            auto topCard = cardPile->getTopCard();
+                            if (!topCard->isFaceUp()) {
+                                topCard->flip();
+                            }
+                        }
+
+                        // Звуковые эффекты и очки
+                        SoundManager::getInstance().playSound(SoundEffect::CARD_PLACE);
+                        if (m_scoreSystem) {
+                            m_scoreSystem->calculateMoveScore(clickedCard, cardPile, tableau);
+                        }
+                        StatsManager::getInstance().incrementMoves();
+
+                        // Сохраняем для отмены
+                        auto command = std::make_unique<MoveCardCommand>(this, clickedCard, cardPile, tableau);
+                        m_undoStack.push(std::move(command));
+
+                        std::cout << "Автоматически перемещено в tableau" << std::endl;
+                        moved = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!moved) {
+                std::cout << "Нет возможности автоматического перемещения" << std::endl;
+            } else {
+                // Если переместили карту, сбрасываем информацию о последнем клике
+                m_lastClickedCard = nullptr;
+                return;
+            }
+        }
+
+        // Обновляем информацию о последнем клике
+        m_lastClickedCard = clickedCard;
+        m_doubleClickClock.restart();
+    } else {
+        // Если кликнули не по карте или по закрытой карте, сбрасываем информацию о последнем клике
+        m_lastClickedCard = nullptr;
+    }
+
+    // Остальная обработка нажатия мыши
+
     // Проверяем, кликнули ли по колоде
     if (m_stockPile->contains(position)) {
         if (m_stockPile->isEmpty()) {
@@ -383,7 +512,7 @@ void Game::handleMousePressed(const sf::Vector2f& position) {
                 card->setDragging(true);
             }
 
-            // ИСПРАВЛЕНИЕ: Используем позицию карты (центр), а не границы
+            // Используем позицию карты (центр), а не границы
             // для расчета смещения относительно точки клика
             sf::Vector2f cardPosition = m_draggedCards.front()->getPosition();
             m_dragOffset = sf::Vector2f(position.x - cardPosition.x, position.y - cardPosition.y);
@@ -404,16 +533,6 @@ void Game::handleMousePressed(const sf::Vector2f& position) {
             }
 
             break;
-        }
-    }
-}
-
-void Game::handleMouseMoved(const sf::Vector2f& position) {
-    // Обновляем позиции перетаскиваемых карт
-    if (!m_draggedCards.empty()) {
-        for (size_t i = 0; i < m_draggedCards.size(); ++i) {
-            float yOffset = i * 30.0f; // Вертикальное смещение для каскада карт
-            m_draggedCards[i]->setPosition(position.x - m_dragOffset.x, position.y - m_dragOffset.y + yOffset);
         }
     }
 }
@@ -574,6 +693,30 @@ void Game::moveCard(std::shared_ptr<Card> card, std::shared_ptr<Pile> sourcePile
     }
 }
 
+// Новый метод для перемещения карты с управляемым переворотом следующей карты
+void Game::moveCardWithFlip(std::shared_ptr<Card> card, std::shared_ptr<Pile> sourcePile, std::shared_ptr<Pile> targetPile) {
+    if (targetPile->canAddCard(card)) {
+        // Запоминаем, можно ли перевернуть следующую карту
+        bool canFlipNextCard = (sourcePile->getType() == PileType::TABLEAU &&
+                               !sourcePile->isEmpty() &&
+                               sourcePile->getCardCount() > 1);
+
+        // Удаляем верхнюю карту из исходной стопки
+        sourcePile->removeTopCard();
+
+        // Добавляем карту в целевую стопку
+        targetPile->addCard(card);
+
+        // Переворачиваем следующую карту, если нужно
+        if (canFlipNextCard) {
+            auto topCard = sourcePile->getTopCard();
+            if (topCard && !topCard->isFaceUp()) {
+                topCard->flip();
+            }
+        }
+    }
+}
+
 void Game::moveCards(const std::vector<std::shared_ptr<Card>>& cards, std::shared_ptr<Pile> sourcePile, std::shared_ptr<Pile> targetPile) {
     if (!cards.empty() && targetPile->canAddCard(cards.front())) {
         size_t index = sourcePile->getCardCount() - cards.size();
@@ -617,7 +760,7 @@ bool Game::autoComplete() {
                 // Ищем подходящий фундамент
                 for (auto& foundation : m_foundationPiles) {
                     if (foundation->canAddCard(topCard)) {
-                        moveCard(topCard, pile, foundation);
+                        moveCardWithFlip(topCard, pile, foundation);
                         moved = true;
                         break;
                     }
@@ -632,7 +775,7 @@ bool Game::autoComplete() {
         auto topCard = m_wastePile->getTopCard();
         for (auto& foundation : m_foundationPiles) {
             if (foundation->canAddCard(topCard)) {
-                moveCard(topCard, m_wastePile, foundation);
+                moveCardWithFlip(topCard, m_wastePile, foundation);
                 moved = true;
                 break;
             }

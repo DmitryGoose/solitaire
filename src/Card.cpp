@@ -130,7 +130,7 @@ bool Card::isFaceUp() const {
 bool Card::isRed() const {
     // ИСПРАВЛЕНО: Масти 1 (Буби) и 2 (Черви) - красные
     int suitValue = static_cast<int>(m_suit);
-    return suitValue == 0 || suitValue == 1; // Hearts и Diamonds
+    return suitValue == 1 || suitValue == 2; // Hearts и Diamonds
 }
 
 void Card::flip() {

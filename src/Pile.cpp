@@ -66,14 +66,17 @@ std::shared_ptr<Card> Pile::removeTopCard() {
     std::shared_ptr<Card> card = m_cards.back();
     m_cards.pop_back();
 
+    // Очищаем указатель на стопку в карте
+    card->setPile(nullptr);
+
     if (card && Card::isDebugMode()) {
         std::cout << "Удаление верхней карты Ранг=" << static_cast<int>(card->getRank())
                   << ", Масть=" << static_cast<int>(card->getSuit())
                   << " из стопки типа " << static_cast<int>(m_type) << std::endl;
     }
 
-    // Очищаем указатель на стопку в карте
-    card->setPile(nullptr);
+    // Просто обновляем позиции карт без переворота следующей
+    update();
 
     return card;
 }
@@ -105,8 +108,9 @@ std::vector<std::shared_ptr<Card>> Pile::removeCards(size_t index) {
 
     m_cards.erase(m_cards.begin() + index, m_cards.end());
 
-    // Проверяем, нужно ли перевернуть новую верхнюю карту
-    updateAfterCardRemoval();
+    // НЕ вызываем updateAfterCardRemoval здесь!
+    // Просто обновляем позиции оставшихся карт
+    update();
 
     return removedCards;
 }
@@ -384,9 +388,7 @@ void Pile::removeCards(const std::vector<Card*>& cards) {
         return;
     }
 
-    bool anyCardRemoved = false; // Добавляем флаг для отслеживания успешного удаления
-
-    // Удаляем каждую карту из списка
+    // Удаляем карты из стопки
     for (Card* rawCard : cards) {
         auto it = std::find_if(m_cards.begin(), m_cards.end(),
             [rawCard](const std::shared_ptr<Card>& sharedCard) {
@@ -399,17 +401,11 @@ void Pile::removeCards(const std::vector<Card*>& cards) {
 
             // Удаляем карту из списка
             m_cards.erase(it);
-            anyCardRemoved = true; // Отмечаем, что карта была удалена
         }
     }
 
-    // Обновляем стопку после удаления карт ТОЛЬКО если хотя бы одна карта была удалена
-    if (anyCardRemoved) {
-        updateAfterCardRemoval();
-    } else {
-        // Если карты не были удалены, просто обновляем позиции существующих карт
-        update();
-    }
+    // Просто обновляем позиции карт, НЕ вызывая updateAfterCardRemoval
+    update();
 }
 
 void Pile::updateAfterCardRemoval() {
