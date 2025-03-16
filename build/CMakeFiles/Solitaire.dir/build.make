@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/leo/solitaire
+CMAKE_SOURCE_DIR = /home/dmitrygoose/solitaire
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/leo/solitaire/build
+CMAKE_BINARY_DIR = /home/dmitrygoose/solitaire/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Solitaire.dir/depend.make
@@ -70,158 +70,158 @@ include CMakeFiles/Solitaire.dir/progress.make
 include CMakeFiles/Solitaire.dir/flags.make
 
 CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o: CMakeFiles/Solitaire.dir/flags.make
-CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o: /home/leo/solitaire/src/BackgroundSelector.cpp
+CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o: /home/dmitrygoose/solitaire/src/BackgroundSelector.cpp
 CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o: CMakeFiles/Solitaire.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o -MF CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o.d -o CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o -c /home/leo/solitaire/src/BackgroundSelector.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o -MF CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o.d -o CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o -c /home/dmitrygoose/solitaire/src/BackgroundSelector.cpp
 
 CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/leo/solitaire/src/BackgroundSelector.cpp > CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dmitrygoose/solitaire/src/BackgroundSelector.cpp > CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.i
 
 CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/leo/solitaire/src/BackgroundSelector.cpp -o CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dmitrygoose/solitaire/src/BackgroundSelector.cpp -o CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.s
 
 CMakeFiles/Solitaire.dir/src/Card.cpp.o: CMakeFiles/Solitaire.dir/flags.make
-CMakeFiles/Solitaire.dir/src/Card.cpp.o: /home/leo/solitaire/src/Card.cpp
+CMakeFiles/Solitaire.dir/src/Card.cpp.o: /home/dmitrygoose/solitaire/src/Card.cpp
 CMakeFiles/Solitaire.dir/src/Card.cpp.o: CMakeFiles/Solitaire.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Solitaire.dir/src/Card.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/Card.cpp.o -MF CMakeFiles/Solitaire.dir/src/Card.cpp.o.d -o CMakeFiles/Solitaire.dir/src/Card.cpp.o -c /home/leo/solitaire/src/Card.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Solitaire.dir/src/Card.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/Card.cpp.o -MF CMakeFiles/Solitaire.dir/src/Card.cpp.o.d -o CMakeFiles/Solitaire.dir/src/Card.cpp.o -c /home/dmitrygoose/solitaire/src/Card.cpp
 
 CMakeFiles/Solitaire.dir/src/Card.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Solitaire.dir/src/Card.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/leo/solitaire/src/Card.cpp > CMakeFiles/Solitaire.dir/src/Card.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dmitrygoose/solitaire/src/Card.cpp > CMakeFiles/Solitaire.dir/src/Card.cpp.i
 
 CMakeFiles/Solitaire.dir/src/Card.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Solitaire.dir/src/Card.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/leo/solitaire/src/Card.cpp -o CMakeFiles/Solitaire.dir/src/Card.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dmitrygoose/solitaire/src/Card.cpp -o CMakeFiles/Solitaire.dir/src/Card.cpp.s
 
 CMakeFiles/Solitaire.dir/src/Context.cpp.o: CMakeFiles/Solitaire.dir/flags.make
-CMakeFiles/Solitaire.dir/src/Context.cpp.o: /home/leo/solitaire/src/Context.cpp
+CMakeFiles/Solitaire.dir/src/Context.cpp.o: /home/dmitrygoose/solitaire/src/Context.cpp
 CMakeFiles/Solitaire.dir/src/Context.cpp.o: CMakeFiles/Solitaire.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Solitaire.dir/src/Context.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/Context.cpp.o -MF CMakeFiles/Solitaire.dir/src/Context.cpp.o.d -o CMakeFiles/Solitaire.dir/src/Context.cpp.o -c /home/leo/solitaire/src/Context.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Solitaire.dir/src/Context.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/Context.cpp.o -MF CMakeFiles/Solitaire.dir/src/Context.cpp.o.d -o CMakeFiles/Solitaire.dir/src/Context.cpp.o -c /home/dmitrygoose/solitaire/src/Context.cpp
 
 CMakeFiles/Solitaire.dir/src/Context.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Solitaire.dir/src/Context.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/leo/solitaire/src/Context.cpp > CMakeFiles/Solitaire.dir/src/Context.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dmitrygoose/solitaire/src/Context.cpp > CMakeFiles/Solitaire.dir/src/Context.cpp.i
 
 CMakeFiles/Solitaire.dir/src/Context.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Solitaire.dir/src/Context.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/leo/solitaire/src/Context.cpp -o CMakeFiles/Solitaire.dir/src/Context.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dmitrygoose/solitaire/src/Context.cpp -o CMakeFiles/Solitaire.dir/src/Context.cpp.s
 
 CMakeFiles/Solitaire.dir/src/Deck.cpp.o: CMakeFiles/Solitaire.dir/flags.make
-CMakeFiles/Solitaire.dir/src/Deck.cpp.o: /home/leo/solitaire/src/Deck.cpp
+CMakeFiles/Solitaire.dir/src/Deck.cpp.o: /home/dmitrygoose/solitaire/src/Deck.cpp
 CMakeFiles/Solitaire.dir/src/Deck.cpp.o: CMakeFiles/Solitaire.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Solitaire.dir/src/Deck.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/Deck.cpp.o -MF CMakeFiles/Solitaire.dir/src/Deck.cpp.o.d -o CMakeFiles/Solitaire.dir/src/Deck.cpp.o -c /home/leo/solitaire/src/Deck.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Solitaire.dir/src/Deck.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/Deck.cpp.o -MF CMakeFiles/Solitaire.dir/src/Deck.cpp.o.d -o CMakeFiles/Solitaire.dir/src/Deck.cpp.o -c /home/dmitrygoose/solitaire/src/Deck.cpp
 
 CMakeFiles/Solitaire.dir/src/Deck.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Solitaire.dir/src/Deck.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/leo/solitaire/src/Deck.cpp > CMakeFiles/Solitaire.dir/src/Deck.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dmitrygoose/solitaire/src/Deck.cpp > CMakeFiles/Solitaire.dir/src/Deck.cpp.i
 
 CMakeFiles/Solitaire.dir/src/Deck.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Solitaire.dir/src/Deck.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/leo/solitaire/src/Deck.cpp -o CMakeFiles/Solitaire.dir/src/Deck.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dmitrygoose/solitaire/src/Deck.cpp -o CMakeFiles/Solitaire.dir/src/Deck.cpp.s
 
 CMakeFiles/Solitaire.dir/src/Game.cpp.o: CMakeFiles/Solitaire.dir/flags.make
-CMakeFiles/Solitaire.dir/src/Game.cpp.o: /home/leo/solitaire/src/Game.cpp
+CMakeFiles/Solitaire.dir/src/Game.cpp.o: /home/dmitrygoose/solitaire/src/Game.cpp
 CMakeFiles/Solitaire.dir/src/Game.cpp.o: CMakeFiles/Solitaire.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Solitaire.dir/src/Game.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/Game.cpp.o -MF CMakeFiles/Solitaire.dir/src/Game.cpp.o.d -o CMakeFiles/Solitaire.dir/src/Game.cpp.o -c /home/leo/solitaire/src/Game.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Solitaire.dir/src/Game.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/Game.cpp.o -MF CMakeFiles/Solitaire.dir/src/Game.cpp.o.d -o CMakeFiles/Solitaire.dir/src/Game.cpp.o -c /home/dmitrygoose/solitaire/src/Game.cpp
 
 CMakeFiles/Solitaire.dir/src/Game.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Solitaire.dir/src/Game.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/leo/solitaire/src/Game.cpp > CMakeFiles/Solitaire.dir/src/Game.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dmitrygoose/solitaire/src/Game.cpp > CMakeFiles/Solitaire.dir/src/Game.cpp.i
 
 CMakeFiles/Solitaire.dir/src/Game.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Solitaire.dir/src/Game.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/leo/solitaire/src/Game.cpp -o CMakeFiles/Solitaire.dir/src/Game.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dmitrygoose/solitaire/src/Game.cpp -o CMakeFiles/Solitaire.dir/src/Game.cpp.s
 
 CMakeFiles/Solitaire.dir/src/GameState.cpp.o: CMakeFiles/Solitaire.dir/flags.make
-CMakeFiles/Solitaire.dir/src/GameState.cpp.o: /home/leo/solitaire/src/GameState.cpp
+CMakeFiles/Solitaire.dir/src/GameState.cpp.o: /home/dmitrygoose/solitaire/src/GameState.cpp
 CMakeFiles/Solitaire.dir/src/GameState.cpp.o: CMakeFiles/Solitaire.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Solitaire.dir/src/GameState.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/GameState.cpp.o -MF CMakeFiles/Solitaire.dir/src/GameState.cpp.o.d -o CMakeFiles/Solitaire.dir/src/GameState.cpp.o -c /home/leo/solitaire/src/GameState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Solitaire.dir/src/GameState.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/GameState.cpp.o -MF CMakeFiles/Solitaire.dir/src/GameState.cpp.o.d -o CMakeFiles/Solitaire.dir/src/GameState.cpp.o -c /home/dmitrygoose/solitaire/src/GameState.cpp
 
 CMakeFiles/Solitaire.dir/src/GameState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Solitaire.dir/src/GameState.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/leo/solitaire/src/GameState.cpp > CMakeFiles/Solitaire.dir/src/GameState.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dmitrygoose/solitaire/src/GameState.cpp > CMakeFiles/Solitaire.dir/src/GameState.cpp.i
 
 CMakeFiles/Solitaire.dir/src/GameState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Solitaire.dir/src/GameState.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/leo/solitaire/src/GameState.cpp -o CMakeFiles/Solitaire.dir/src/GameState.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dmitrygoose/solitaire/src/GameState.cpp -o CMakeFiles/Solitaire.dir/src/GameState.cpp.s
 
 CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o: CMakeFiles/Solitaire.dir/flags.make
-CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o: /home/leo/solitaire/src/HintSystem.cpp
+CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o: /home/dmitrygoose/solitaire/src/HintSystem.cpp
 CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o: CMakeFiles/Solitaire.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o -MF CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o.d -o CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o -c /home/leo/solitaire/src/HintSystem.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o -MF CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o.d -o CMakeFiles/Solitaire.dir/src/HintSystem.cpp.o -c /home/dmitrygoose/solitaire/src/HintSystem.cpp
 
 CMakeFiles/Solitaire.dir/src/HintSystem.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Solitaire.dir/src/HintSystem.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/leo/solitaire/src/HintSystem.cpp > CMakeFiles/Solitaire.dir/src/HintSystem.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dmitrygoose/solitaire/src/HintSystem.cpp > CMakeFiles/Solitaire.dir/src/HintSystem.cpp.i
 
 CMakeFiles/Solitaire.dir/src/HintSystem.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Solitaire.dir/src/HintSystem.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/leo/solitaire/src/HintSystem.cpp -o CMakeFiles/Solitaire.dir/src/HintSystem.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dmitrygoose/solitaire/src/HintSystem.cpp -o CMakeFiles/Solitaire.dir/src/HintSystem.cpp.s
 
 CMakeFiles/Solitaire.dir/src/Pile.cpp.o: CMakeFiles/Solitaire.dir/flags.make
-CMakeFiles/Solitaire.dir/src/Pile.cpp.o: /home/leo/solitaire/src/Pile.cpp
+CMakeFiles/Solitaire.dir/src/Pile.cpp.o: /home/dmitrygoose/solitaire/src/Pile.cpp
 CMakeFiles/Solitaire.dir/src/Pile.cpp.o: CMakeFiles/Solitaire.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Solitaire.dir/src/Pile.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/Pile.cpp.o -MF CMakeFiles/Solitaire.dir/src/Pile.cpp.o.d -o CMakeFiles/Solitaire.dir/src/Pile.cpp.o -c /home/leo/solitaire/src/Pile.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Solitaire.dir/src/Pile.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/Pile.cpp.o -MF CMakeFiles/Solitaire.dir/src/Pile.cpp.o.d -o CMakeFiles/Solitaire.dir/src/Pile.cpp.o -c /home/dmitrygoose/solitaire/src/Pile.cpp
 
 CMakeFiles/Solitaire.dir/src/Pile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Solitaire.dir/src/Pile.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/leo/solitaire/src/Pile.cpp > CMakeFiles/Solitaire.dir/src/Pile.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dmitrygoose/solitaire/src/Pile.cpp > CMakeFiles/Solitaire.dir/src/Pile.cpp.i
 
 CMakeFiles/Solitaire.dir/src/Pile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Solitaire.dir/src/Pile.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/leo/solitaire/src/Pile.cpp -o CMakeFiles/Solitaire.dir/src/Pile.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dmitrygoose/solitaire/src/Pile.cpp -o CMakeFiles/Solitaire.dir/src/Pile.cpp.s
 
 CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o: CMakeFiles/Solitaire.dir/flags.make
-CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o: /home/leo/solitaire/src/PopupImage.cpp
+CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o: /home/dmitrygoose/solitaire/src/PopupImage.cpp
 CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o: CMakeFiles/Solitaire.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o -MF CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o.d -o CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o -c /home/leo/solitaire/src/PopupImage.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o -MF CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o.d -o CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o -c /home/dmitrygoose/solitaire/src/PopupImage.cpp
 
 CMakeFiles/Solitaire.dir/src/PopupImage.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Solitaire.dir/src/PopupImage.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/leo/solitaire/src/PopupImage.cpp > CMakeFiles/Solitaire.dir/src/PopupImage.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dmitrygoose/solitaire/src/PopupImage.cpp > CMakeFiles/Solitaire.dir/src/PopupImage.cpp.i
 
 CMakeFiles/Solitaire.dir/src/PopupImage.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Solitaire.dir/src/PopupImage.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/leo/solitaire/src/PopupImage.cpp -o CMakeFiles/Solitaire.dir/src/PopupImage.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dmitrygoose/solitaire/src/PopupImage.cpp -o CMakeFiles/Solitaire.dir/src/PopupImage.cpp.s
 
 CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o: CMakeFiles/Solitaire.dir/flags.make
-CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o: /home/leo/solitaire/src/ResourceManager.cpp
+CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o: /home/dmitrygoose/solitaire/src/ResourceManager.cpp
 CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o: CMakeFiles/Solitaire.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o -MF CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o.d -o CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o -c /home/leo/solitaire/src/ResourceManager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o -MF CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o.d -o CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o -c /home/dmitrygoose/solitaire/src/ResourceManager.cpp
 
 CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/leo/solitaire/src/ResourceManager.cpp > CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dmitrygoose/solitaire/src/ResourceManager.cpp > CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.i
 
 CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/leo/solitaire/src/ResourceManager.cpp -o CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dmitrygoose/solitaire/src/ResourceManager.cpp -o CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.s
 
 CMakeFiles/Solitaire.dir/src/main.cpp.o: CMakeFiles/Solitaire.dir/flags.make
-CMakeFiles/Solitaire.dir/src/main.cpp.o: /home/leo/solitaire/src/main.cpp
+CMakeFiles/Solitaire.dir/src/main.cpp.o: /home/dmitrygoose/solitaire/src/main.cpp
 CMakeFiles/Solitaire.dir/src/main.cpp.o: CMakeFiles/Solitaire.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Solitaire.dir/src/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/main.cpp.o -MF CMakeFiles/Solitaire.dir/src/main.cpp.o.d -o CMakeFiles/Solitaire.dir/src/main.cpp.o -c /home/leo/solitaire/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Solitaire.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Solitaire.dir/src/main.cpp.o -MF CMakeFiles/Solitaire.dir/src/main.cpp.o.d -o CMakeFiles/Solitaire.dir/src/main.cpp.o -c /home/dmitrygoose/solitaire/src/main.cpp
 
 CMakeFiles/Solitaire.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Solitaire.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/leo/solitaire/src/main.cpp > CMakeFiles/Solitaire.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dmitrygoose/solitaire/src/main.cpp > CMakeFiles/Solitaire.dir/src/main.cpp.i
 
 CMakeFiles/Solitaire.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Solitaire.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/leo/solitaire/src/main.cpp -o CMakeFiles/Solitaire.dir/src/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dmitrygoose/solitaire/src/main.cpp -o CMakeFiles/Solitaire.dir/src/main.cpp.s
 
 # Object files for target Solitaire
 Solitaire_OBJECTS = \
@@ -257,7 +257,7 @@ Solitaire: /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.6.1
 Solitaire: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1
 Solitaire: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.6.1
 Solitaire: CMakeFiles/Solitaire.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable Solitaire"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable Solitaire"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Solitaire.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -269,6 +269,6 @@ CMakeFiles/Solitaire.dir/clean:
 .PHONY : CMakeFiles/Solitaire.dir/clean
 
 CMakeFiles/Solitaire.dir/depend:
-	cd /home/leo/solitaire/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/leo/solitaire /home/leo/solitaire /home/leo/solitaire/build /home/leo/solitaire/build /home/leo/solitaire/build/CMakeFiles/Solitaire.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/dmitrygoose/solitaire/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/dmitrygoose/solitaire /home/dmitrygoose/solitaire /home/dmitrygoose/solitaire/build /home/dmitrygoose/solitaire/build /home/dmitrygoose/solitaire/build/CMakeFiles/Solitaire.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/Solitaire.dir/depend
 

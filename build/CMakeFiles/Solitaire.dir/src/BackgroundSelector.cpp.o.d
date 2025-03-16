@@ -1,6 +1,7 @@
 CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o: \
- /home/leo/solitaire/src/BackgroundSelector.cpp \
- /usr/include/stdc-predef.h /home/leo/solitaire/include/GameState.hpp \
+ /home/dmitrygoose/solitaire/src/BackgroundSelector.cpp \
+ /usr/include/stdc-predef.h \
+ /home/dmitrygoose/solitaire/include/GameState.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
@@ -253,7 +254,7 @@ CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o: \
  /usr/include/c++/13/bits/hashtable_policy.h \
  /usr/include/c++/13/bits/enable_special_members.h \
  /usr/include/c++/13/array /usr/include/c++/13/compare \
- /home/leo/solitaire/include/SettingsManager.hpp \
+ /home/dmitrygoose/solitaire/include/SettingsManager.hpp \
  /usr/include/c++/13/fstream /usr/include/c++/13/istream \
  /usr/include/c++/13/bits/istream.tcc \
  /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
@@ -349,6 +350,6 @@ CMakeFiles/Solitaire.dir/src/BackgroundSelector.cpp.o: \
  /usr/include/nlohmann/ordered_map.hpp /usr/include/c++/13/any \
  /usr/include/nlohmann/detail/macro_unscope.hpp \
  /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
- /home/leo/solitaire/include/ResourceManager.hpp \
- /home/leo/solitaire/include/ResourceManager.hpp \
+ /home/dmitrygoose/solitaire/include/ResourceManager.hpp \
+ /home/dmitrygoose/solitaire/include/ResourceManager.hpp \
  /usr/include/c++/13/iostream
