@@ -27,8 +27,13 @@
     ],
     "bestScore": 1700,
     "fastestWin": 400,
+<<<<<<< HEAD
     "gamesPlayed": 2,
     "gamesWon": 43,
+=======
+    "gamesPlayed": 1,
+    "gamesWon": 33,
+>>>>>>> 53bc0b814c90cb014f37a01bc256c5f1f535dcdd
     "totalCards": 0,
     "totalMoves": 264
 }
