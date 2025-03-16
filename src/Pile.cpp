@@ -367,20 +367,43 @@ bool Pile::addCards(const std::vector<Card*>& cards) {
         return false;
     }
 
-    // Добавляем все карты в стопку
+    // Сохраняем указатели на shared_ptr карт и их исходные стопки
+    std::vector<std::pair<std::shared_ptr<Card>, Pile*>> cardsToMove;
     for (Card* rawCard : cards) {
-        std::shared_ptr<Card> cardShared = rawCard->getPile()->findSharedPtrByRawPtr(rawCard);
+        Pile* sourcePile = rawCard->getPile();
+        std::shared_ptr<Card> cardShared = sourcePile->findSharedPtrByRawPtr(rawCard);
         if (cardShared) {
-            // Перемещаем карту в эту стопку
-            cardShared->setPile(this);
-            m_cards.push_back(cardShared);
+            cardsToMove.push_back({cardShared, sourcePile});
         }
+    }
+
+    // Удаляем карты из исходных стопок
+    for (const auto& [cardShared, sourcePile] : cardsToMove) {
+        sourcePile->removeCard(cardShared.get());
+    }
+
+    // Добавляем карты в целевую стопку
+    for (const auto& [cardShared, _] : cardsToMove) {
+        cardShared->setPile(this);
+        m_cards.push_back(cardShared);
     }
 
     // Обновляем позиции всех карт
     update();
 
     return true;
+}
+
+// Добавьте этот вспомогательный метод для удаления конкретной карты
+void Pile::removeCard(Card* card) {
+    auto it = std::find_if(m_cards.begin(), m_cards.end(),
+        [card](const std::shared_ptr<Card>& sharedCard) {
+            return sharedCard.get() == card;
+        });
+
+    if (it != m_cards.end()) {
+        m_cards.erase(it);
+    }
 }
 
 void Pile::removeCards(const std::vector<Card*>& cards) {

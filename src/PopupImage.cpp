@@ -31,7 +31,7 @@ void PopupImage::showVictory() {
 
     // Центрируем спрайт
     sf::FloatRect bounds = m_currentSprite.getLocalBounds();
-    m_currentSprite.setOrigin(bounds.width / 10.0f, bounds.height / 10.0f);
+    m_currentSprite.setOrigin(bounds.width / 2.0f, bounds.height / 2.0f);
 }
 
 void PopupImage::showInvalidMove(float scale) {

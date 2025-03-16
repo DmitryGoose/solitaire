@@ -64,6 +64,7 @@ public:
     bool canMoveMultipleCards() const;
     void getCardsAbove(Card* card, std::vector<Card*>& cards) const;
     bool addCards(const std::vector<Card*>& cards);
+    void removeCard(Card* card);
     void removeCards(const std::vector<Card*>& cards);
     void updateAfterCardRemoval();
 

@@ -315,11 +315,6 @@ bool Game::tryAutoMoveAceToFoundation(std::shared_ptr<Card> card, std::shared_pt
 }
 
 void Game::handleMousePressed(const sf::Vector2f& position) {
-    // Если идут анимации или показывается всплывающее изображение, не обрабатываем нажатия
-    if (AnimationManager::getInstance().hasActiveAnimations() || m_popupImage.isVisible()) {
-        return;
-    }
-
     // Ищем карту под курсором
     std::shared_ptr<Card> clickedCard = nullptr;
     std::shared_ptr<Pile> cardPile = nullptr;
@@ -336,9 +331,6 @@ void Game::handleMousePressed(const sf::Vector2f& position) {
     // Проверяем двойной клик на открытой карте
     if (clickedCard && clickedCard->isFaceUp()) {
         float timeSinceLastClick = m_doubleClickClock.getElapsedTime().asSeconds();
-
-        // Отладочный вывод для диагностики
-        std::cout << "Клик по карте, время с последнего клика: " << timeSinceLastClick << "с" << std::endl;
 
         if (m_lastClickedCard == clickedCard && timeSinceLastClick < DOUBLE_CLICK_THRESHOLD) {
             std::cout << "Обнаружен двойной клик!" << std::endl;
@@ -417,6 +409,8 @@ void Game::handleMousePressed(const sf::Vector2f& position) {
 
             if (!moved) {
                 std::cout << "Нет возможности автоматического перемещения" << std::endl;
+                // Показываем всплывающее изображение неправильного хода
+                m_popupImage.showInvalidMove();
             } else {
                 // Если переместили карту, сбрасываем информацию о последнем клике
                 m_lastClickedCard = nullptr;
@@ -632,9 +626,6 @@ void Game::handleMouseReleased(const sf::Vector2f& position) {
         if (Card::isDebugMode()) {
             std::cout << "Подходящая целевая стопка не найдена, возвращаем карты обратно" << std::endl;
         }
-
-        // Показываем всплывающее изображение неправильного хода
-        m_popupImage.showInvalidMove();
 
         // Возвращаем карты в исходную стопку
         for (const auto& card : m_draggedCards) {
