@@ -1,7 +1,6 @@
 CMakeFiles/Solitaire.dir/src/ResourceManager.cpp.o: \
- /home/dmitrygoose/solitaire/src/ResourceManager.cpp \
- /usr/include/stdc-predef.h \
- /home/dmitrygoose/solitaire/include/ResourceManager.hpp \
+ /home/leo/solitaire/src/ResourceManager.cpp /usr/include/stdc-predef.h \
+ /home/leo/solitaire/include/ResourceManager.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \

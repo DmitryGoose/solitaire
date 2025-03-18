@@ -1,12 +1,11 @@
-CMakeFiles/Solitaire.dir/src/Pile.cpp.o: \
- /home/dmitrygoose/solitaire/src/Pile.cpp /usr/include/stdc-predef.h \
- /home/dmitrygoose/solitaire/include/Pile.hpp \
- /home/dmitrygoose/solitaire/include/Card.hpp \
- /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
- /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
- /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
- /usr/include/SFML/System/Time.hpp /usr/include/SFML/System/Err.hpp \
- /usr/include/c++/13/ostream /usr/include/c++/13/bits/requires_hosted.h \
+CMakeFiles/Solitaire.dir/src/Pile.cpp.o: /home/leo/solitaire/src/Pile.cpp \
+ /usr/include/stdc-predef.h /home/leo/solitaire/include/Pile.hpp \
+ /home/leo/solitaire/include/Card.hpp /usr/include/SFML/Graphics.hpp \
+ /usr/include/SFML/Window.hpp /usr/include/SFML/System.hpp \
+ /usr/include/SFML/Config.hpp /usr/include/SFML/System/Clock.hpp \
+ /usr/include/SFML/System/Export.hpp /usr/include/SFML/System/Time.hpp \
+ /usr/include/SFML/System/Err.hpp /usr/include/c++/13/ostream \
+ /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \

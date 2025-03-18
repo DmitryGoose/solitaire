@@ -1,7 +1,6 @@
 CMakeFiles/Solitaire.dir/src/PopupImage.cpp.o: \
- /home/dmitrygoose/solitaire/src/PopupImage.cpp \
- /usr/include/stdc-predef.h \
- /home/dmitrygoose/solitaire/include/PopupImage.hpp \
+ /home/leo/solitaire/src/PopupImage.cpp /usr/include/stdc-predef.h \
+ /home/leo/solitaire/include/PopupImage.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \

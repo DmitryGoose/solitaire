@@ -1,10 +1,10 @@
-CMakeFiles/Solitaire.dir/src/main.cpp.o: \
- /home/dmitrygoose/solitaire/src/main.cpp /usr/include/stdc-predef.h \
- /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
- /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
- /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
- /usr/include/SFML/System/Time.hpp /usr/include/SFML/System/Err.hpp \
- /usr/include/c++/13/ostream /usr/include/c++/13/bits/requires_hosted.h \
+CMakeFiles/Solitaire.dir/src/main.cpp.o: /home/leo/solitaire/src/main.cpp \
+ /usr/include/stdc-predef.h /usr/include/SFML/Graphics.hpp \
+ /usr/include/SFML/Window.hpp /usr/include/SFML/System.hpp \
+ /usr/include/SFML/Config.hpp /usr/include/SFML/System/Clock.hpp \
+ /usr/include/SFML/System/Export.hpp /usr/include/SFML/System/Time.hpp \
+ /usr/include/SFML/System/Err.hpp /usr/include/c++/13/ostream \
+ /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -234,9 +234,9 @@ CMakeFiles/Solitaire.dir/src/main.cpp.o: \
  /usr/include/SFML/Graphics/Sprite.hpp \
  /usr/include/SFML/Graphics/Text.hpp \
  /usr/include/SFML/Graphics/VertexBuffer.hpp \
- /home/dmitrygoose/solitaire/include/Game.hpp \
- /home/dmitrygoose/solitaire/include/Pile.hpp \
- /home/dmitrygoose/solitaire/include/Card.hpp /usr/include/c++/13/memory \
+ /home/leo/solitaire/include/Game.hpp \
+ /home/leo/solitaire/include/Pile.hpp \
+ /home/leo/solitaire/include/Card.hpp /usr/include/c++/13/memory \
  /usr/include/c++/13/bits/stl_raw_storage_iter.h \
  /usr/include/c++/13/bits/align.h /usr/include/c++/13/bits/unique_ptr.h \
  /usr/include/c++/13/bits/shared_ptr.h \
@@ -257,13 +257,12 @@ CMakeFiles/Solitaire.dir/src/main.cpp.o: \
  /usr/include/c++/13/array /usr/include/c++/13/compare \
  /usr/include/c++/13/iostream /usr/include/c++/13/istream \
  /usr/include/c++/13/bits/istream.tcc \
- /home/dmitrygoose/solitaire/include/PopupImage.hpp \
- /usr/include/c++/13/stack /usr/include/c++/13/deque \
- /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \
- /usr/include/c++/13/bits/stl_stack.h \
- /home/dmitrygoose/solitaire/include/ResourceManager.hpp \
- /home/dmitrygoose/solitaire/include/SoundManager.hpp \
- /usr/include/SFML/Audio.hpp /usr/include/SFML/Audio/InputSoundFile.hpp \
+ /home/leo/solitaire/include/PopupImage.hpp /usr/include/c++/13/stack \
+ /usr/include/c++/13/deque /usr/include/c++/13/bits/stl_deque.h \
+ /usr/include/c++/13/bits/deque.tcc /usr/include/c++/13/bits/stl_stack.h \
+ /home/leo/solitaire/include/ResourceManager.hpp \
+ /home/leo/solitaire/include/SoundManager.hpp /usr/include/SFML/Audio.hpp \
+ /usr/include/SFML/Audio/InputSoundFile.hpp \
  /usr/include/SFML/Audio/Export.hpp /usr/include/SFML/Audio/Listener.hpp \
  /usr/include/SFML/Audio/Music.hpp \
  /usr/include/SFML/Audio/SoundStream.hpp \
@@ -280,12 +279,12 @@ CMakeFiles/Solitaire.dir/src/main.cpp.o: \
  /usr/include/SFML/Audio/SoundFileFactory.inl \
  /usr/include/SFML/Audio/SoundFileReader.hpp \
  /usr/include/SFML/Audio/SoundFileWriter.hpp \
- /home/dmitrygoose/solitaire/include/SaveManager.hpp \
- /home/dmitrygoose/solitaire/include/Game.hpp /usr/include/c++/13/fstream \
+ /home/leo/solitaire/include/SaveManager.hpp \
+ /home/leo/solitaire/include/Game.hpp /usr/include/c++/13/fstream \
  /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h \
  /usr/include/c++/13/bits/fstream.tcc \
- /home/dmitrygoose/solitaire/include/StatsManager.hpp \
+ /home/leo/solitaire/include/StatsManager.hpp \
  /usr/include/nlohmann/json.hpp /usr/include/c++/13/utility \
  /usr/include/c++/13/bits/stl_relops.h \
  /usr/include/nlohmann/adl_serializer.hpp \
@@ -377,12 +376,12 @@ CMakeFiles/Solitaire.dir/src/main.cpp.o: \
  /usr/include/nlohmann/ordered_map.hpp /usr/include/c++/13/any \
  /usr/include/nlohmann/detail/macro_unscope.hpp \
  /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
- /home/dmitrygoose/solitaire/include/SettingsManager.hpp \
- /home/dmitrygoose/solitaire/include/GameState.hpp \
- /home/dmitrygoose/solitaire/include/SettingsManager.hpp \
- /home/dmitrygoose/solitaire/include/ResourceManager.hpp \
- /home/dmitrygoose/solitaire/include/GameTimer.hpp \
- /home/dmitrygoose/solitaire/include/ScoreSystem.hpp \
- /home/dmitrygoose/solitaire/include/Context.hpp \
- /home/dmitrygoose/solitaire/include/AnimationManager.hpp \
- /home/dmitrygoose/solitaire/include/Card.hpp
+ /home/leo/solitaire/include/SettingsManager.hpp \
+ /home/leo/solitaire/include/GameState.hpp \
+ /home/leo/solitaire/include/SettingsManager.hpp \
+ /home/leo/solitaire/include/ResourceManager.hpp \
+ /home/leo/solitaire/include/GameTimer.hpp \
+ /home/leo/solitaire/include/ScoreSystem.hpp \
+ /home/leo/solitaire/include/Context.hpp \
+ /home/leo/solitaire/include/AnimationManager.hpp \
+ /home/leo/solitaire/include/Card.hpp

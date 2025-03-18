@@ -54,10 +54,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/dmitrygoose/solitaire
+CMAKE_SOURCE_DIR = /home/leo/solitaire
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/dmitrygoose/solitaire/build
+CMAKE_BINARY_DIR = /home/leo/solitaire/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -81,14 +81,14 @@ clean: CMakeFiles/Solitaire.dir/clean
 CMakeFiles/Solitaire.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Solitaire.dir/build.make CMakeFiles/Solitaire.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Solitaire.dir/build.make CMakeFiles/Solitaire.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/dmitrygoose/solitaire/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12 "Built target Solitaire"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/leo/solitaire/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12 "Built target Solitaire"
 .PHONY : CMakeFiles/Solitaire.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Solitaire.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dmitrygoose/solitaire/build/CMakeFiles 12
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/leo/solitaire/build/CMakeFiles 12
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Solitaire.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dmitrygoose/solitaire/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/leo/solitaire/build/CMakeFiles 0
 .PHONY : CMakeFiles/Solitaire.dir/rule
 
 # Convenience name for target.

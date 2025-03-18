@@ -1,6 +1,5 @@
-CMakeFiles/Solitaire.dir/src/Card.cpp.o: \
- /home/dmitrygoose/solitaire/src/Card.cpp /usr/include/stdc-predef.h \
- /home/dmitrygoose/solitaire/include/Card.hpp \
+CMakeFiles/Solitaire.dir/src/Card.cpp.o: /home/leo/solitaire/src/Card.cpp \
+ /usr/include/stdc-predef.h /home/leo/solitaire/include/Card.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
@@ -235,8 +234,8 @@ CMakeFiles/Solitaire.dir/src/Card.cpp.o: \
  /usr/include/SFML/Graphics/Sprite.hpp \
  /usr/include/SFML/Graphics/Text.hpp \
  /usr/include/SFML/Graphics/VertexBuffer.hpp \
- /home/dmitrygoose/solitaire/include/Pile.hpp \
- /home/dmitrygoose/solitaire/include/Card.hpp /usr/include/c++/13/memory \
+ /home/leo/solitaire/include/Pile.hpp \
+ /home/leo/solitaire/include/Card.hpp /usr/include/c++/13/memory \
  /usr/include/c++/13/bits/stl_raw_storage_iter.h \
  /usr/include/c++/13/bits/align.h /usr/include/c++/13/bits/unique_ptr.h \
  /usr/include/c++/13/bits/shared_ptr.h \
@@ -257,12 +256,12 @@ CMakeFiles/Solitaire.dir/src/Card.cpp.o: \
  /usr/include/c++/13/array /usr/include/c++/13/compare \
  /usr/include/c++/13/iostream /usr/include/c++/13/istream \
  /usr/include/c++/13/bits/istream.tcc \
- /home/dmitrygoose/solitaire/include/Context.hpp \
- /home/dmitrygoose/solitaire/include/HintSystem.hpp \
- /home/dmitrygoose/solitaire/include/Pile.hpp \
- /home/dmitrygoose/solitaire/include/AnimationManager.hpp \
- /home/dmitrygoose/solitaire/include/SoundManager.hpp \
- /usr/include/SFML/Audio.hpp /usr/include/SFML/Audio/InputSoundFile.hpp \
+ /home/leo/solitaire/include/Context.hpp \
+ /home/leo/solitaire/include/HintSystem.hpp \
+ /home/leo/solitaire/include/Pile.hpp \
+ /home/leo/solitaire/include/AnimationManager.hpp \
+ /home/leo/solitaire/include/SoundManager.hpp /usr/include/SFML/Audio.hpp \
+ /usr/include/SFML/Audio/InputSoundFile.hpp \
  /usr/include/SFML/Audio/Export.hpp /usr/include/SFML/Audio/Listener.hpp \
  /usr/include/SFML/Audio/Music.hpp \
  /usr/include/SFML/Audio/SoundStream.hpp \
@@ -279,4 +278,4 @@ CMakeFiles/Solitaire.dir/src/Card.cpp.o: \
  /usr/include/SFML/Audio/SoundFileFactory.inl \
  /usr/include/SFML/Audio/SoundFileReader.hpp \
  /usr/include/SFML/Audio/SoundFileWriter.hpp \
- /home/dmitrygoose/solitaire/include/ScoreSystem.hpp
+ /home/leo/solitaire/include/ScoreSystem.hpp
