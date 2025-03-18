@@ -149,6 +149,7 @@ public:
     void useHint();
 
 private:
+    bool m_victoryProcessed = false;
     static constexpr float DOUBLE_CLICK_THRESHOLD = 0.3f;
     bool shouldAutoMoveAceToFoundation(std::shared_ptr<Card> card);
     std::shared_ptr<Pile> findFoundationForAce();

@@ -14,7 +14,7 @@
     },
     "graphics": {
         "animationsEnabled": true,
-        "backgroundName": "wood_table",
+        "backgroundName": "bird",
         "cardBackStyle": 0,
         "customCardBackPath": "",
         "fullscreen": false,

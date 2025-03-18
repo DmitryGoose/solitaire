@@ -2,7 +2,7 @@
 #include "AnimationManager.hpp"
 #include "GameTimer.hpp"
 #include "HintSystem.hpp"
-#include "PopupImage.hpp" // Добавлено: включение заголовочного файла всплывающих изображений
+#include "PopupImage.hpp"
 #include "ScoreSystem.hpp"
 #include "SoundManager.hpp"
 #include "StatsManager.hpp"
@@ -114,7 +114,6 @@ void MoveCardsCommand::undo() {
 
 Game::Game()
     : m_dragSourcePile(nullptr), m_lastClickedCard(nullptr)
-
 {
   initialize();
 
@@ -143,6 +142,9 @@ void Game::initialize() {
   // Сбрасываем переменные двойного клика
   m_lastClickedCard = nullptr;
   m_doubleClickClock.restart();
+
+  // Сбрасываем флаг обработки победы
+  m_victoryProcessed = false;
 }
 
 void Game::createPiles() {
@@ -243,9 +245,8 @@ void Game::update(sf::Time deltaTime) {
     m_popupImage.update(deltaTime.asSeconds());
 
     // Проверяем условие победы и показываем уведомление только один раз
-    static bool victoryProcessed = false;
-    if (checkVictory() && !victoryProcessed) {
-        victoryProcessed = true;
+    if (checkVictory() && !m_victoryProcessed) {
+        m_victoryProcessed = true;
 
         // Показываем всплывающее изображение победы
         m_popupImage.showVictory();
@@ -674,23 +675,8 @@ void Game::handleMouseReleased(const sf::Vector2f &position) {
     // Добавляем команду в стек отмены
     m_undoStack.push(std::move(command));
 
-    // Проверяем, закончилась ли игра
-    if (checkVictory()) {
-      // Показываем всплывающее изображение победы
-      m_popupImage.showVictory();
-
-      // Проигрываем звук победы
-      try {
-        SoundManager::getInstance().playSound(SoundEffect::VICTORY);
-      } catch (...) {
-        std::cerr << "Не удалось проиграть звук победы" << std::endl;
-      }
-
-      // Обновляем статистику
-      StatsManager::getInstance().incrementWins();
-
-      notifyObservers();
-    }
+    // Примечание: убираем двойную проверку победы,
+    // теперь она происходит только в методе update()
   } else {
     // Отладочный вывод
     if (Card::isDebugMode()) {
@@ -722,8 +708,7 @@ void Game::reset() {
   m_popupImage.hide();
 
   // Сбрасываем флаг обработки победы
-  static bool victoryProcessed = false;
-  victoryProcessed = false;
+  m_victoryProcessed = false;
 
   // Сбрасываем системы таймера и счета
   if (m_timer) {
