@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include "AnimationManager.hpp"
+#include "Card.hpp"
 #include "GameTimer.hpp"
 #include "HintSystem.hpp"
 #include "PopupImage.hpp"
@@ -113,7 +114,8 @@ void MoveCardsCommand::undo() {
 }
 
 Game::Game()
-    : m_dragSourcePile(nullptr), m_lastClickedCard(nullptr)
+    : m_dragSourcePile(nullptr), m_lastClickedCard(nullptr),
+      m_showingHint(false), m_hintPulseLevel(0.0f)
 {
   initialize();
 
@@ -145,6 +147,9 @@ void Game::initialize() {
 
   // Сбрасываем флаг обработки победы
   m_victoryProcessed = false;
+
+  // Сбрасываем данные подсказки
+  clearHint();
 }
 
 void Game::createPiles() {
@@ -236,50 +241,183 @@ void Game::handleMouseMoved(const sf::Vector2f &position) {
 }
 
 void Game::update(sf::Time deltaTime) {
-    // Обновляем все стопки
-    for (const auto &pile : m_piles) {
-        pile->update();
-    }
-
-    // Обновляем всплывающее изображение
-    m_popupImage.update(deltaTime.asSeconds());
-
-    // Проверяем условие победы и показываем уведомление только один раз
-    if (checkVictory() && !m_victoryProcessed) {
-        m_victoryProcessed = true;
-
-        // Показываем всплывающее изображение победы
-        m_popupImage.showVictory();
-
-        // Проигрываем звук победы
-        try {
-            SoundManager::getInstance().playSound(SoundEffect::VICTORY);
-        } catch (...) {
-            std::cerr << "Не удалось проиграть звук победы" << std::endl;
+    try {
+        // Обновляем все стопки
+        for (const auto &pile : m_piles) {
+            pile->update();
         }
 
-        // Обновляем статистику - только один раз
-        StatsManager::getInstance().incrementWins();
+        // Обновляем всплывающее изображение
+        m_popupImage.update(deltaTime.asSeconds());
 
-        // Уведомляем наблюдателей для отображения меню победы
-        notifyObservers();
+        // Обновляем анимацию подсказки, если она активна
+        if (m_showingHint) {
+            updateHintAnimation(deltaTime.asSeconds());
+        }
+
+        // Проверяем условие победы и показываем уведомление только один раз
+        if (checkVictory() && !m_victoryProcessed) {
+            std::cout << "Обнаружена победа!" << std::endl;
+
+            // Сразу устанавливаем флаг, чтобы избежать повторной обработки
+            m_victoryProcessed = true;
+
+            // Показываем всплывающее изображение победы
+            m_popupImage.showVictory();
+
+            // Обновляем статистику - только один раз
+            StatsManager::getInstance().incrementWins();
+
+            // Используем более короткий, надежный звук
+            try {
+                SoundManager::getInstance().playSound(SoundEffect::CLICK);
+                sf::sleep(sf::milliseconds(100)); // Небольшая пауза для завершения звука
+            } catch (const std::exception& e) {
+                std::cerr << "Ошибка звука: " << e.what() << std::endl;
+            } catch (...) {
+                std::cerr << "Неизвестная ошибка звука" << std::endl;
+            }
+
+            // Ждем немного перед сменой состояния
+            sf::Clock delayClock;
+            while (delayClock.getElapsedTime().asMilliseconds() < 300) {
+                sf::sleep(sf::milliseconds(10));
+            }
+
+            std::cout << "Уведомляем наблюдателей о победе..." << std::endl;
+            notifyObservers();
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Ошибка в Game::update(): " << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Неизвестная ошибка в Game::update()" << std::endl;
     }
 }
 
+void Game::updateHintAnimation(float deltaTime) {
+    // Пульсирующий эффект для подсказки
+    m_hintPulseLevel += deltaTime * 3.0f; // Скорость пульсации
+
+    // Ограничиваем длительность подсказки (5 секунд)
+    if (m_hintClock.getElapsedTime().asSeconds() > 5.0f) {
+        clearHint();
+        return;
+    }
+
+    // Для анимации в этой реализации не используются дополнительные методы карт и стопок.
+    // Вместо этого создаем временный эффект при отрисовке (см. метод draw)
+}
+
+void Game::clearHint() {
+    // Очищаем данные подсказки
+    m_hintSourceCard = nullptr;
+    m_hintSourcePile = nullptr;
+    m_hintTargetPile = nullptr;
+    m_hintCards.clear();
+    m_showingHint = false;
+}
+
 void Game::draw(sf::RenderWindow &window) {
-  // Рисуем все стопки
-  for (const auto &pile : m_piles) {
-    window.draw(*pile);
-  }
+  try {
+    // Рисуем все стопки
+    for (const auto &pile : m_piles) {
+      window.draw(*pile);
+    }
 
-  // Рисуем перетаскиваемые карты поверх всех стопок
-  for (const auto &card : m_draggedCards) {
-    window.draw(*card);
-  }
+    // Отрисовка подсказки, если она активна
+    if (m_showingHint) {
+        float pulse = (std::sin(m_hintPulseLevel) + 1.0f) * 0.5f; // 0.0-1.0
 
-  // Рисуем всплывающее изображение, если оно видимо
-  if (m_popupImage.isVisible()) {
-    window.draw(m_popupImage);
+        // Вычисляем размеры карты с учетом масштаба
+        float cardScale = 0.4f; // Такой же масштаб как в Card::setCardScale(0.4f)
+        float baseCardWidth = 225.0f; // Базовый размер текстуры карты
+        float baseCardHeight = 310.0f;
+        float cardWidth = baseCardWidth * cardScale;
+        float cardHeight = baseCardHeight * cardScale;
+
+        // Подсветка исходных карт
+        for (auto& card : m_hintCards) {
+            // Получаем позицию карты
+            sf::Vector2f cardPos = card->getPosition();
+
+            // Создаем подсветку чуть больше карты
+            sf::RectangleShape highlight;
+            highlight.setSize(sf::Vector2f(cardWidth + 4, cardHeight + 4));
+            highlight.setOrigin(47, 64); // Небольшое смещение для центрирования
+            highlight.setPosition(cardPos);
+            highlight.setFillColor(sf::Color(255, 255, 0, static_cast<sf::Uint8>(80 * pulse)));
+            window.draw(highlight);
+        }
+
+        // Подсветка целевой стопки
+        if (m_hintTargetPile) {
+          sf::Vector2f highlightPos;
+
+          if (m_hintTargetPile->isEmpty()) {
+              // Для пустой стопки используем её позицию
+              highlightPos = m_hintTargetPile->getPosition();
+          } else if (m_hintTargetPile->getType() == PileType::TABLEAU) {
+              // Для tableau находим позицию последней карты
+              auto topCard = m_hintTargetPile->getTopCard();
+              highlightPos = topCard->getPosition();
+          } else {
+              // Для foundation используем позицию стопки
+              highlightPos = m_hintTargetPile->getPosition();
+          }
+
+          sf::RectangleShape targetHighlight;
+          targetHighlight.setSize(sf::Vector2f(cardWidth + 4, cardHeight + 4));
+          if (m_hintTargetPile->getType() == PileType::FOUNDATION) {
+            targetHighlight.setOrigin(8, 2);
+          } else {
+            targetHighlight.setOrigin(47, 64);
+          }
+          targetHighlight.setPosition(highlightPos);
+          targetHighlight.setFillColor(sf::Color(0, 255, 0, static_cast<sf::Uint8>(80 * pulse)));
+          targetHighlight.setOutlineThickness(2.0f);
+          targetHighlight.setOutlineColor(sf::Color(0, 180, 0, static_cast<sf::Uint8>(150 * pulse)));
+          window.draw(targetHighlight);
+
+          // Добавим стрелку или линию, соединяющую исходную карту с целевой позицией
+          if (!m_hintCards.empty()) {
+              sf::Vector2f sourcePos = m_hintCards[0]->getPosition();
+
+              // Создаем линию между источником и целью
+              sf::Vertex line[] = {
+                  sf::Vertex(sourcePos, sf::Color(255, 255, 0, static_cast<sf::Uint8>(150 * pulse))),
+                  sf::Vertex(highlightPos, sf::Color(0, 255, 0, static_cast<sf::Uint8>(150 * pulse)))
+              };
+
+              window.draw(line, 2, sf::Lines);
+          }
+      }
+
+        // Если это подсказка взять карту из колоды
+        if (m_hintSourcePile && m_hintCards.empty()) {
+            sf::Vector2f pilePos = m_hintSourcePile->getPosition();
+
+            sf::RectangleShape pileHighlight;
+            pileHighlight.setSize(sf::Vector2f(cardWidth + 4, cardHeight + 4));
+            pileHighlight.setOrigin(8, 2);
+            pileHighlight.setPosition(pilePos);
+            pileHighlight.setFillColor(sf::Color(0, 255, 255, static_cast<sf::Uint8>(80 * pulse)));
+            window.draw(pileHighlight);
+        }
+    }
+
+    // Рисуем перетаскиваемые карты поверх всех стопок
+    for (const auto &card : m_draggedCards) {
+      window.draw(*card);
+    }
+
+    // Рисуем всплывающее изображение, если оно видимо
+    if (m_popupImage.isVisible()) {
+      window.draw(m_popupImage);
+    }
+  } catch (const std::exception& e) {
+    std::cerr << "Ошибка при отрисовке игры: " << e.what() << std::endl;
+  } catch (...) {
+    std::cerr << "Неизвестная ошибка при отрисовке игры" << std::endl;
   }
 }
 
@@ -334,6 +472,11 @@ bool Game::tryAutoMoveAceToFoundation(std::shared_ptr<Card> card,
 }
 
 void Game::handleMousePressed(const sf::Vector2f &position) {
+    // Если активна подсказка, отключаем ее при нажатии мыши
+    if (m_showingHint) {
+        clearHint();
+    }
+
     // Ищем карту под курсором
     std::shared_ptr<Card> clickedCard = nullptr;
     std::shared_ptr<Pile> cardPile = nullptr;
@@ -697,7 +840,19 @@ void Game::handleMouseReleased(const sf::Vector2f &position) {
   m_dragSourcePile = nullptr;
 }
 
-bool Game::isGameOver() const { return checkVictory(); }
+bool Game::isGameOver() const {
+  return checkVictory();
+}
+
+bool Game::checkVictory() const {
+  // Проверяем, что все фундаменты заполнены (в каждом по 13 карт)
+  for (const auto &foundation : m_foundationPiles) {
+    if (foundation->getCardCount() != 13) {
+      return false;
+    }
+  }
+  return true;
+}
 
 void Game::reset() {
   // Очищаем стек отмены
@@ -719,11 +874,19 @@ void Game::reset() {
     m_scoreSystem->reset();
   }
 
+  // Очищаем данные подсказки
+  clearHint();
+
   // Инициализируем игру заново
   initialize();
 }
 
 void Game::undo() {
+  // Если активна подсказка, отключаем ее
+  if (m_showingHint) {
+    clearHint();
+  }
+
   if (!m_undoStack.empty()) {
     auto command = std::move(m_undoStack.top());
     m_undoStack.pop();
@@ -786,25 +949,47 @@ void Game::moveCards(const std::vector<std::shared_ptr<Card>> &cards,
   }
 }
 
-void Game::addObserver(Observer observer) { m_observers.push_back(observer); }
-
-void Game::notifyObservers() {
-  for (const auto &observer : m_observers) {
-    observer();
-  }
+void Game::addObserver(Observer observer) {
+  m_observers.push_back(observer);
 }
 
-bool Game::checkVictory() const {
-  // Проверяем, что все фундаменты заполнены (в каждом по 13 карт)
-  for (const auto &foundation : m_foundationPiles) {
-    if (foundation->getCardCount() != 13) {
-      return false;
+void Game::notifyObservers() {
+    try {
+        std::cout << "Начало уведомления наблюдателей..." << std::endl;
+
+        // Создаем временную копию списка наблюдателей
+        std::vector<Observer> observersCopy = m_observers;
+
+        // После вызова всех наблюдателей очищаем список
+        m_observers.clear();
+
+        // Безопасный вызов всех наблюдателей по копии
+        for (const auto &observer : observersCopy) {
+            try {
+                if (observer) {
+                    observer();
+                }
+            } catch (const std::exception& e) {
+                std::cerr << "Ошибка в наблюдателе: " << e.what() << std::endl;
+            } catch (...) {
+                std::cerr << "Неизвестная ошибка в наблюдателе" << std::endl;
+            }
+        }
+
+        std::cout << "Все наблюдатели успешно уведомлены и очищены" << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Общая ошибка при уведомлении: " << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Неизвестная ошибка при уведомлении наблюдателей" << std::endl;
     }
-  }
-  return true;
 }
 
 bool Game::autoComplete() {
+  // Если активна подсказка, отключаем ее
+  if (m_showingHint) {
+    clearHint();
+  }
+
   // Автоматическое завершение игры
   bool moved = false;
 
@@ -843,236 +1028,272 @@ bool Game::autoComplete() {
 }
 
 void Game::useHint() {
-  // Реализация системы подсказок
+  // Если подсказка уже отображается, очищаем ее
+  if (m_showingHint) {
+      clearHint();
+      return;
+  }
 
   // Структура для хранения подсказки (возможного хода)
   struct Hint {
-    std::shared_ptr<Card> card;
-    std::shared_ptr<Pile> sourcePile;
-    std::shared_ptr<Pile> targetPile;
-    int priority; // Приоритет хода (чем выше, тем лучше)
+      std::vector<std::shared_ptr<Card>> cards;
+      std::shared_ptr<Pile> sourcePile;
+      std::shared_ptr<Pile> targetPile;
+      int priority;
   };
 
   std::vector<Hint> possibleMoves;
 
-  // 1. Проверяем возможность переместить карты в фундамент
-  // Приоритет: тузы (5), другие карты в фундамент (4)
-
-  // Проверяем tableau piles
-  for (auto &tableau : m_tableauPiles) {
-    if (!tableau->isEmpty()) {
-      auto topCard = tableau->getTopCard();
-      if (topCard->isFaceUp()) {
-        // Ищем подходящий фундамент
-        for (auto &foundation : m_foundationPiles) {
-          if (foundation->canAddCard(topCard)) {
-            Hint hint = {topCard, tableau, foundation,
-                         (topCard->getRank() == Rank::ACE) ? 5 : 4};
-            possibleMoves.push_back(hint);
-          }
-        }
-      }
-    }
-  }
-
-  // Проверяем waste pile
+  // 1. Проверка перемещения из waste в foundation
   if (!m_wastePile->isEmpty()) {
-    auto topCard = m_wastePile->getTopCard();
-    for (auto &foundation : m_foundationPiles) {
-      if (foundation->canAddCard(topCard)) {
-        Hint hint = {topCard, m_wastePile, foundation,
-                     (topCard->getRank() == Rank::ACE) ? 5 : 4};
-        possibleMoves.push_back(hint);
-      }
-    }
-  }
-
-  // 2. Проверяем возможность открыть новую карту в tableau
-  // Приоритет: 3
-  for (auto &tableau : m_tableauPiles) {
-    if (tableau->getCardCount() >= 2) {
-      // Получаем предпоследнюю карту
-      auto secondLastIndex = tableau->getCardCount() - 2;
-      auto secondLastCard = tableau->getCardAt(secondLastIndex);
-
-      // Проверяем предпоследнюю карту (которая откроется)
-      if (!secondLastCard->isFaceUp()) {
-        auto topCard = tableau->getTopCard();
-
-        // Ищем куда можно переместить верхнюю карту
-        for (auto &targetTableau : m_tableauPiles) {
-          if (targetTableau != tableau && targetTableau->canAddCard(topCard)) {
-            Hint hint = {topCard, tableau, targetTableau, 3};
-            possibleMoves.push_back(hint);
-          }
-        }
-
-        // Проверяем фундаменты
-        for (auto &foundation : m_foundationPiles) {
+      auto topCard = m_wastePile->getTopCard();
+      for (auto& foundation : m_foundationPiles) {
           if (foundation->canAddCard(topCard)) {
-            // Перемещение в фундамент имеет больший приоритет, поэтому 4
-            Hint hint = {topCard, tableau, foundation, 4};
-            possibleMoves.push_back(hint);
+              std::vector<std::shared_ptr<Card>> cards = {topCard};
+              int priority = (topCard->getRank() == Rank::ACE) ? 5 : 4;
+              possibleMoves.push_back({cards, m_wastePile, foundation, priority});
           }
-        }
       }
-    }
   }
 
-  // 3. Проверяем возможность переместить карту из waste в tableau
-  // Приоритет: 2
-  if (!m_wastePile->isEmpty()) {
-    auto topCard = m_wastePile->getTopCard();
-    for (auto &tableau : m_tableauPiles) {
-      if (tableau->canAddCard(topCard)) {
-        Hint hint = {topCard, m_wastePile, tableau, 2};
-        possibleMoves.push_back(hint);
-      }
-    }
-  }
-
-  // 4. Проверяем возможность переместить короля на пустое место
-  for (auto &targetTableau : m_tableauPiles) {
-    if (targetTableau->isEmpty()) {
-      // Ищем королей в отбое - это всегда имеет смысл
-      if (!m_wastePile->isEmpty()) {
-        auto wasteCard = m_wastePile->getTopCard();
-        if (wasteCard->getRank() == Rank::KING) {
-          Hint hint = {wasteCard, m_wastePile, targetTableau, 1};
-          possibleMoves.push_back(hint);
-        }
-      }
-
-      // Ищем королей в других tableau
-      for (auto &sourceTableau : m_tableauPiles) {
-        if (sourceTableau != targetTableau && !sourceTableau->isEmpty()) {
-          // Проверяем только верхнюю карту или последовательность карт
-          // начиная с верхней и до первого короля
-          size_t topIndex = sourceTableau->getCardCount() - 1;
-          size_t kingIndex = topIndex; // Предполагаем, что король на вершине
-          bool foundKing = false;
-
-          // Сначала проверяем, есть ли король в видимой последовательности
-          // сверху вниз
-          for (int i = topIndex; i >= 0; i--) {
-            auto card = sourceTableau->getCardAt(i);
-            if (!card->isFaceUp())
-              break; // Дошли до закрытой карты, выходим
-
-            if (card->getRank() == Rank::KING) {
-              kingIndex = i;
-              foundKing = true;
-              break;
-            }
-          }
-
-          if (foundKing) {
-            // Король найден, теперь определяем, стоит ли его перемещать
-
-            // Проверяем, находится ли король в основании стопки (внизу)
-            bool isBaseKing = (kingIndex == 0);
-
-            // Проверяем, есть ли под королём закрытые карты
-            bool hasHiddenCardsBelowKing = false;
-            if (isBaseKing) {
-              for (size_t j = 1; j < sourceTableau->getCardCount(); j++) {
-                if (!sourceTableau->getCardAt(j)->isFaceUp()) {
-                  hasHiddenCardsBelowKing = true;
-                  break;
-                }
+  // 2. Проверка перемещения из tableau в foundation
+  for (auto& tableau : m_tableauPiles) {
+      if (!tableau->isEmpty()) {
+          auto topCard = tableau->getTopCard();
+          if (topCard->isFaceUp()) {
+              for (auto& foundation : m_foundationPiles) {
+                  if (foundation->canAddCard(topCard)) {
+                      std::vector<std::shared_ptr<Card>> cards = {topCard};
+                      int priority = (topCard->getRank() == Rank::ACE) ? 5 : 4;
+                      possibleMoves.push_back({cards, tableau, foundation, priority});
+                  }
               }
-            }
-
-            // Перемещаем короля только если:
-            // 1. Король не в основании стопки
-            // 2. ИЛИ он в основании, но под ним есть закрытые карты
-            if (!isBaseKing || hasHiddenCardsBelowKing) {
-              auto kingCard = sourceTableau->getCardAt(kingIndex);
-              int priority = hasHiddenCardsBelowKing ? 3 : 1;
-              Hint hint = {kingCard, sourceTableau, targetTableau, priority};
-              possibleMoves.push_back(hint);
-            }
           }
-        }
       }
-    }
   }
 
-  // 5. Если нет других ходов, проверяем ситуацию с колодой
+  // 3. Проверка перемещения из waste в tableau
+  if (!m_wastePile->isEmpty()) {
+      auto card = m_wastePile->getTopCard();
+      for (auto& tableau : m_tableauPiles) {
+          if (tableau->canAddCard(card)) {
+              std::vector<std::shared_ptr<Card>> cards = {card};
+              int priority = 2;
+              // Если это король и стопка пуста, повышаем приоритет
+              if (card->getRank() == Rank::KING && tableau->isEmpty()) {
+                  priority = 3;
+              }
+              possibleMoves.push_back({cards, m_wastePile, tableau, priority});
+          }
+      }
+  }
+
+  // 4. Проверка перемещения между tableau с открытием карты
+  for (auto& sourceTableau : m_tableauPiles) {
+      if (sourceTableau->getCardCount() >= 2) {
+          // Проверяем, является ли предпоследняя карта закрытой
+          size_t secondLastIndex = sourceTableau->getCardCount() - 2;
+          auto secondLastCard = sourceTableau->getCardAt(secondLastIndex);
+          bool wouldFlipCard = !secondLastCard->isFaceUp();
+
+          if (wouldFlipCard) {
+              auto topCard = sourceTableau->getTopCard();
+              // Ищем куда можно переместить верхнюю карту
+              for (auto& targetTableau : m_tableauPiles) {
+                  if (targetTableau != sourceTableau && targetTableau->canAddCard(topCard)) {
+                      std::vector<std::shared_ptr<Card>> cards = {topCard};
+                      possibleMoves.push_back({cards, sourceTableau, targetTableau, 3});
+                  }
+              }
+          }
+      }
+  }
+
+  // 5. Проверка перемещения последовательностей карт между tableau
+  for (auto& sourceTableau : m_tableauPiles) {
+      if (sourceTableau->isEmpty()) continue;
+
+      // Анализируем все возможные последовательности карт сверху вниз
+      size_t maxIndex = sourceTableau->getCardCount() - 1;
+
+      for (int startIndex = maxIndex; startIndex >= 0; startIndex--) {
+          auto startCard = sourceTableau->getCardAt(startIndex);
+
+          // Проверяем только открытые карты
+          if (!startCard->isFaceUp()) continue;
+
+          // Формируем последовательность от startIndex до верха
+          std::vector<std::shared_ptr<Card>> cardSequence;
+          for (int i = startIndex; i <= maxIndex; i++) {
+              cardSequence.push_back(sourceTableau->getCardAt(i));
+          }
+
+          // Проверяем, можно ли переместить эту последовательность
+          if (cardSequence.size() >= 1) {
+              for (auto& targetTableau : m_tableauPiles) {
+                  if (targetTableau != sourceTableau && targetTableau->canAddCard(cardSequence.front())) {
+                      // НОВОЕ: Проверяем, имеет ли смысл это перемещение
+                      bool hasStrategicValue = false;
+
+                      // 1. Определяем, будет ли открыта новая карта
+                      bool wouldFlipCard = (startIndex > 0 &&
+                                           !sourceTableau->getCardAt(startIndex - 1)->isFaceUp());
+
+                      if (wouldFlipCard) {
+                          hasStrategicValue = true; // Открытие новой карты всегда полезно
+                      }
+
+                      // 2. Проверяем, перемещаем ли мы короля на пустую стопку
+                      bool movingKingToEmpty = (cardSequence.front()->getRank() == Rank::KING &&
+                                               targetTableau->isEmpty());
+
+                      if (movingKingToEmpty) {
+                          hasStrategicValue = true; // Перемещение короля на пустую стопку может быть полезно
+                      }
+
+                      // 3. Проверяем, освобождает ли это ход место для карт из отбоя
+                      bool clearingSpaceForWaste = false;
+                      if (!m_wastePile->isEmpty()) {
+                          auto wasteCard = m_wastePile->getTopCard();
+                          // Если мы освобождаем место для карты из отбоя
+                          if (startIndex == 0 && sourceTableau->isEmpty() &&
+                              wasteCard->getRank() == Rank::KING) {
+                              clearingSpaceForWaste = true;
+                          }
+                      }
+
+                      if (clearingSpaceForWaste) {
+                          hasStrategicValue = true;
+                      }
+
+                      // 4. Перемещение длинной последовательности может быть стратегически полезно
+                      if (cardSequence.size() > 3) {
+                          hasStrategicValue = true; // Длинные последовательности стоит перемещать
+                      }
+
+                      // 5. Проверяем, не приводит ли перемещение к объединению последовательности
+                      // Например, если мы перемещаем 5 червей на 6 бубен, а в целевой стопке
+                      // есть последовательность до 6
+                      bool connectingSequences = false;
+                      if (!targetTableau->isEmpty()) {
+                          auto targetTopCard = targetTableau->getTopCard();
+                          auto sourceBottomCard = cardSequence.front();
+
+                          if (static_cast<int>(targetTopCard->getRank()) == static_cast<int>(sourceBottomCard->getRank()) + 1 &&
+                              ((targetTopCard->getSuit() == Suit::HEARTS ||
+                                targetTopCard->getSuit() == Suit::DIAMONDS) !=
+                               (sourceBottomCard->getSuit() == Suit::HEARTS ||
+                                sourceBottomCard->getSuit() == Suit::DIAMONDS))) {
+                              connectingSequences = true;
+                          }
+                      }
+
+                      if (connectingSequences) {
+                          hasStrategicValue = true;
+                      }
+
+                      // Добавляем ход только если он имеет стратегическую ценность
+                      if (hasStrategicValue) {
+                          int priority = 1; // Базовый приоритет
+
+                          if (wouldFlipCard) {
+                              priority = 3; // Высокий приоритет для открытия новой карты
+                          }
+
+                          if (movingKingToEmpty) {
+                              priority = wouldFlipCard ? 4 : 2;
+                          }
+
+                          possibleMoves.push_back({cardSequence, sourceTableau, targetTableau, priority});
+                      }
+                  }
+              }
+          }
+      }
+  }
+
+  // Если нет других ходов, проверяем ситуацию с колодой
   if (possibleMoves.empty()) {
-    // Если колода не пуста, советуем взять карту
-    if (!m_stockPile->isEmpty()) {
-      std::cout << "Подсказка: Возьмите карту из колоды." << std::endl;
-      return;
-    }
-    // Если колода пуста, но есть карты в отбое, предлагаем перевернуть колоду
-    else if (m_stockPile->isEmpty() && !m_wastePile->isEmpty()) {
-      std::cout << "Подсказка: Переверните колоду (все карты из отбоя вернутся "
-                   "в колоду)."
-                << std::endl;
-      return;
-    }
+      if (!m_stockPile->isEmpty()) {
+          std::cout << "Подсказка: Возьмите карту из колоды." << std::endl;
+
+          // Подсвечиваем колоду
+          m_hintSourcePile = m_stockPile;
+          m_hintPulseLevel = 0.0f;
+          m_hintClock.restart();
+          m_showingHint = true;
+
+          return;
+      } else if (m_stockPile->isEmpty() && !m_wastePile->isEmpty()) {
+          std::cout << "Подсказка: Переверните колоду." << std::endl;
+
+          // Подсвечиваем пустую колоду
+          m_hintSourcePile = m_stockPile;
+          m_hintPulseLevel = 0.0f;
+          m_hintClock.restart();
+          m_showingHint = true;
+
+          return;
+      } else {
+          std::cout << "Нет доступных ходов." << std::endl;
+          return;
+      }
   }
 
-  // Сортируем подсказки по приоритету (от высшего к низшему)
-  std::sort(
-      possibleMoves.begin(), possibleMoves.end(),
-      [](const Hint &a, const Hint &b) { return a.priority > b.priority; });
+  // Сортируем ходы по приоритету (от высшего к низшему)
+  std::sort(possibleMoves.begin(), possibleMoves.end(),
+            [](const Hint& a, const Hint& b) { return a.priority > b.priority; });
 
-  // Если есть подходящие ходы, показываем лучший
-  if (!possibleMoves.empty()) {
-    const auto &bestMove = possibleMoves[0];
+  // Выбираем лучший ход
+  const auto& bestMove = possibleMoves[0];
 
-    // Визуально выделяем карту и целевую стопку
-    // Это можно реализовать через временную анимацию
+  // Текстовая подсказка
+  std::cout << "Подсказка: Переместите ";
 
-    std::cout << "Подсказка: Переместите ";
-    if (static_cast<int>(bestMove.card->getRank()) >= 2 &&
-        static_cast<int>(bestMove.card->getRank()) <= 10) {
-      std::cout << static_cast<int>(bestMove.card->getRank()) << " ";
-    } else if (static_cast<int>(bestMove.card->getRank()) == 1) {
-      std::cout << "туза ";
-    } else if (static_cast<int>(bestMove.card->getRank()) == 11) {
-      std::cout << "валета ";
-    } else if (static_cast<int>(bestMove.card->getRank()) == 12) {
-      std::cout << "даму ";
-    } else if (static_cast<int>(bestMove.card->getRank()) == 13) {
-      std::cout << "короля ";
-    }
-    switch (bestMove.card->getSuit()) {
-    case Suit::HEARTS:
-      std::cout << "крести";
-      break;
-    case Suit::DIAMONDS:
-      std::cout << "буби";
-      break;
-    case Suit::CLUBS:
-      std::cout << "черви";
-      break;
-    case Suit::SPADES:
-      std::cout << "пики";
-      break;
-    }
+  if (bestMove.cards.size() == 1) {
+      // Одна карта
+      auto card = bestMove.cards[0];
+      if (static_cast<int>(card->getRank()) >= 2 && static_cast<int>(card->getRank()) <= 10) {
+          std::cout << static_cast<int>(card->getRank());
+      } else if (static_cast<int>(card->getRank()) == 1) {
+          std::cout << "туза";
+      } else if (static_cast<int>(card->getRank()) == 11) {
+          std::cout << "валета";
+      } else if (static_cast<int>(card->getRank()) == 12) {
+          std::cout << "даму";
+      } else if (static_cast<int>(card->getRank()) == 13) {
+          std::cout << "короля";
+      }
 
-    std::cout << " на ";
+      std::cout << " ";
 
-    switch (bestMove.targetPile->getType()) {
-    case PileType::FOUNDATION:
-      std::cout << "фундамент";
-      break;
-    case PileType::TABLEAU:
-      std::cout << "игровую стопку";
-      break;
-    default:
-      std::cout << "другую стопку";
-      break;
-    }
-
-    std::cout << std::endl;
-
-    // Визуальное выделение карты и стопки
-    // Здесь можно добавить код для временной анимации или подсветки
+      switch (card->getSuit()) {
+          case Suit::HEARTS: std::cout << "червей"; break;
+          case Suit::DIAMONDS: std::cout << "бубен"; break;
+          case Suit::CLUBS: std::cout << "треф"; break;
+          case Suit::SPADES: std::cout << "пик"; break;
+      }
   } else {
-    std::cout << "Нет доступных ходов." << std::endl;
+      // Последовательность карт
+      std::cout << "последовательность из " << bestMove.cards.size() << " карт";
   }
+
+  std::cout << " на ";
+
+  switch (bestMove.targetPile->getType()) {
+      case PileType::FOUNDATION: std::cout << "фундамент"; break;
+      case PileType::TABLEAU: std::cout << "игровую стопку"; break;
+      default: std::cout << "другую стопку"; break;
+  }
+
+  std::cout << std::endl;
+
+  // Визуальная анимация подсказки
+  m_hintSourceCard = bestMove.cards[0];
+  m_hintSourcePile = bestMove.sourcePile;
+  m_hintTargetPile = bestMove.targetPile;
+  m_hintCards = bestMove.cards;
+  m_hintPulseLevel = 0.0f;
+  m_hintClock.restart();
+  m_showingHint = true;
 }

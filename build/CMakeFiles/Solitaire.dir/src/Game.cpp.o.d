@@ -260,6 +260,7 @@ CMakeFiles/Solitaire.dir/src/Game.cpp.o: /home/leo/solitaire/src/Game.cpp \
  /usr/include/c++/13/deque /usr/include/c++/13/bits/stl_deque.h \
  /usr/include/c++/13/bits/deque.tcc /usr/include/c++/13/bits/stl_stack.h \
  /home/leo/solitaire/include/AnimationManager.hpp \
+ /home/leo/solitaire/include/Card.hpp \
  /home/leo/solitaire/include/GameTimer.hpp \
  /home/leo/solitaire/include/HintSystem.hpp \
  /home/leo/solitaire/include/AnimationManager.hpp \

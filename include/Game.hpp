@@ -145,10 +145,21 @@ public:
     // Метод для автоматического завершения игры
     bool autoComplete();
 
-    // Использование подсказки
+    // Методы для системы подсказок
     void useHint();
+    void updateHintAnimation(float deltaTime);
+    void clearHint();
+    bool isShowingHint() const { return m_showingHint; }
 
 private:
+    // Поля для системы подсказок
+    std::shared_ptr<Card> m_hintSourceCard = nullptr;
+    std::shared_ptr<Pile> m_hintSourcePile = nullptr;
+    std::shared_ptr<Pile> m_hintTargetPile = nullptr;
+    std::vector<std::shared_ptr<Card>> m_hintCards;
+    sf::Clock m_hintClock;
+    bool m_showingHint = false;
+    float m_hintPulseLevel = 0.0f;
     bool m_victoryProcessed = false;
     static constexpr float DOUBLE_CLICK_THRESHOLD = 0.3f;
     bool shouldAutoMoveAceToFoundation(std::shared_ptr<Card> card);
