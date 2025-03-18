@@ -14,7 +14,6 @@ public:
     void showVictory();
 
     // Показать всплывающее изображение неправильного хода
-    // Добавляем параметр scale для управления размером
     void showInvalidMove(float scale = 1.5f);
 
     // Обновление (для контроля времени отображения)
@@ -22,6 +21,12 @@ public:
 
     // Проверка видимости
     bool isVisible() const;
+
+    // Скрытие изображения
+    void hide();
+
+    // Установка позиции изображения
+    void setPosition(float x, float y);
 
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -34,4 +39,6 @@ private:
     float m_displayTimer;
     float m_displayDuration;
     float m_scale; // Масштаб текущего изображения
+    sf::Vector2f m_position; // Пользовательская позиция (если задана)
+    bool m_hasCustomPosition;
 };

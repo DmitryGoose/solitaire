@@ -14,7 +14,7 @@
     },
     "graphics": {
         "animationsEnabled": true,
-        "backgroundName": "jager",
+        "backgroundName": "wood_table",
         "cardBackStyle": 0,
         "customCardBackPath": "",
         "fullscreen": false,

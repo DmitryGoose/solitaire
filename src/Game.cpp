@@ -234,32 +234,35 @@ void Game::handleMouseMoved(const sf::Vector2f &position) {
 }
 
 void Game::update(sf::Time deltaTime) {
-  // Обновляем все стопки
-  for (const auto &pile : m_piles) {
-    pile->update();
-  }
-
-  // Не обновляем позиции перетаскиваемых карт здесь
-  // Это делается в методе handleMouseMoved()
-
-  // Обновляем всплывающее изображение
-  m_popupImage.update(deltaTime.asSeconds());
-
-  // Проверяем условие победы
-  if (checkVictory() && !m_popupImage.isVisible()) {
-    // Показываем всплывающее изображение победы
-    m_popupImage.showVictory();
-
-    // Проигрываем звук победы
-    try {
-      SoundManager::getInstance().playSound(SoundEffect::VICTORY);
-    } catch (...) {
-      std::cerr << "Не удалось проиграть звук победы" << std::endl;
+    // Обновляем все стопки
+    for (const auto &pile : m_piles) {
+        pile->update();
     }
 
-    // Обновляем статистику
-    StatsManager::getInstance().incrementWins();
-  }
+    // Обновляем всплывающее изображение
+    m_popupImage.update(deltaTime.asSeconds());
+
+    // Проверяем условие победы и показываем уведомление только один раз
+    static bool victoryProcessed = false;
+    if (checkVictory() && !victoryProcessed) {
+        victoryProcessed = true;
+
+        // Показываем всплывающее изображение победы
+        m_popupImage.showVictory();
+
+        // Проигрываем звук победы
+        try {
+            SoundManager::getInstance().playSound(SoundEffect::VICTORY);
+        } catch (...) {
+            std::cerr << "Не удалось проиграть звук победы" << std::endl;
+        }
+
+        // Обновляем статистику - только один раз
+        StatsManager::getInstance().incrementWins();
+
+        // Уведомляем наблюдателей для отображения меню победы
+        notifyObservers();
+    }
 }
 
 void Game::draw(sf::RenderWindow &window) {
@@ -715,6 +718,12 @@ void Game::reset() {
   while (!m_undoStack.empty()) {
     m_undoStack.pop();
   }
+
+  m_popupImage.hide();
+
+  // Сбрасываем флаг обработки победы
+  static bool victoryProcessed = false;
+  victoryProcessed = false;
 
   // Сбрасываем системы таймера и счета
   if (m_timer) {
