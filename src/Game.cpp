@@ -241,71 +241,48 @@ void Game::handleMouseMoved(const sf::Vector2f &position) {
 }
 
 void Game::update(sf::Time deltaTime) {
-    try {
-        // Обновляем все стопки
-        for (const auto &pile : m_piles) {
-            pile->update();
-        }
+  try {
+      // Обновляем все стопки
+      for (const auto &pile : m_piles) {
+          pile->update();
+      }
 
-        // Обновляем всплывающее изображение
-        m_popupImage.update(deltaTime.asSeconds());
+      // Обновляем всплывающее изображение
+      m_popupImage.update(deltaTime.asSeconds());
 
-        // Обновляем анимацию подсказки, если она активна
-        if (m_showingHint) {
-            updateHintAnimation(deltaTime.asSeconds());
-        }
+      // Обновляем анимацию подсказки, если она активна
+      if (m_showingHint) {
+          updateHintAnimation(deltaTime.asSeconds());
+      }
 
-        // Проверяем условие победы и показываем уведомление только один раз
-        if (checkVictory() && !m_victoryProcessed) {
-            std::cout << "Обнаружена победа!" << std::endl;
+      // Проверяем условие победы но НЕ уведомляем наблюдателей
+      if (checkVictory() && !m_victoryProcessed) {
+          std::cout << "Обнаружена победа!" << std::endl;
 
-            // Сразу устанавливаем флаг, чтобы избежать повторной обработки
-            m_victoryProcessed = true;
+          // Сразу устанавливаем флаг, чтобы избежать повторной обработки
+          m_victoryProcessed = true;
 
-            // Показываем всплывающее изображение победы
-            m_popupImage.showVictory();
+          // Устанавливаем флаг ожидающей победы
+          m_pendingVictory = true;
 
-            // Обновляем статистику - только один раз
-            StatsManager::getInstance().incrementWins();
+          // Показываем всплывающее изображение победы
+          m_popupImage.showVictory();
 
-            // Используем более короткий, надежный звук
-            try {
-                SoundManager::getInstance().playSound(SoundEffect::CLICK);
-                sf::sleep(sf::milliseconds(100)); // Небольшая пауза для завершения звука
-            } catch (const std::exception& e) {
-                std::cerr << "Ошибка звука: " << e.what() << std::endl;
-            } catch (...) {
-                std::cerr << "Неизвестная ошибка звука" << std::endl;
-            }
+          // Обновляем статистику
+          StatsManager::getInstance().incrementWins();
 
-            // Ждем немного перед сменой состояния
-            sf::Clock delayClock;
-            while (delayClock.getElapsedTime().asMilliseconds() < 300) {
-                sf::sleep(sf::milliseconds(10));
-            }
-
-            std::cout << "Уведомляем наблюдателей о победе..." << std::endl;
-            notifyObservers();
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "Ошибка в Game::update(): " << e.what() << std::endl;
-    } catch (...) {
-        std::cerr << "Неизвестная ошибка в Game::update()" << std::endl;
-    }
-}
-
-void Game::updateHintAnimation(float deltaTime) {
-    // Пульсирующий эффект для подсказки
-    m_hintPulseLevel += deltaTime * 3.0f; // Скорость пульсации
-
-    // Ограничиваем длительность подсказки (5 секунд)
-    if (m_hintClock.getElapsedTime().asSeconds() > 5.0f) {
-        clearHint();
-        return;
-    }
-
-    // Для анимации в этой реализации не используются дополнительные методы карт и стопок.
-    // Вместо этого создаем временный эффект при отрисовке (см. метод draw)
+          // Звуковой эффект
+          try {
+              SoundManager::getInstance().playSound(SoundEffect::CLICK);
+          } catch (...) {
+              std::cerr << "Ошибка звука" << std::endl;
+          }
+      }
+  } catch (const std::exception& e) {
+      std::cerr << "Ошибка в Game::update(): " << e.what() << std::endl;
+  } catch (...) {
+      std::cerr << "Неизвестная ошибка в Game::update()" << std::endl;
+  }
 }
 
 void Game::clearHint() {
@@ -857,7 +834,7 @@ bool Game::checkVictory() const {
 void Game::reset() {
   // Очищаем стек отмены
   while (!m_undoStack.empty()) {
-    m_undoStack.pop();
+      m_undoStack.pop();
   }
 
   m_popupImage.hide();
@@ -867,11 +844,11 @@ void Game::reset() {
 
   // Сбрасываем системы таймера и счета
   if (m_timer) {
-    m_timer->reset();
+      m_timer->reset();
   }
 
   if (m_scoreSystem) {
-    m_scoreSystem->reset();
+      m_scoreSystem->reset();
   }
 
   // Очищаем данные подсказки
@@ -879,6 +856,9 @@ void Game::reset() {
 
   // Инициализируем игру заново
   initialize();
+
+  // Добавляем подписчиков заново (важно для повторных игр)
+  // Этот шаг необходим только если в notifyObservers() мы очищаем список
 }
 
 void Game::undo() {
@@ -954,34 +934,6 @@ void Game::addObserver(Observer observer) {
 }
 
 void Game::notifyObservers() {
-    try {
-        std::cout << "Начало уведомления наблюдателей..." << std::endl;
-
-        // Создаем временную копию списка наблюдателей
-        std::vector<Observer> observersCopy = m_observers;
-
-        // После вызова всех наблюдателей очищаем список
-        m_observers.clear();
-
-        // Безопасный вызов всех наблюдателей по копии
-        for (const auto &observer : observersCopy) {
-            try {
-                if (observer) {
-                    observer();
-                }
-            } catch (const std::exception& e) {
-                std::cerr << "Ошибка в наблюдателе: " << e.what() << std::endl;
-            } catch (...) {
-                std::cerr << "Неизвестная ошибка в наблюдателе" << std::endl;
-            }
-        }
-
-        std::cout << "Все наблюдатели успешно уведомлены и очищены" << std::endl;
-    } catch (const std::exception& e) {
-        std::cerr << "Общая ошибка при уведомлении: " << e.what() << std::endl;
-    } catch (...) {
-        std::cerr << "Неизвестная ошибка при уведомлении наблюдателей" << std::endl;
-    }
 }
 
 bool Game::autoComplete() {
@@ -1025,6 +977,20 @@ bool Game::autoComplete() {
   }
 
   return moved;
+}
+
+void Game::updateHintAnimation(float deltaTime) {
+  // Пульсирующий эффект для подсказки
+  m_hintPulseLevel += deltaTime * 3.0f; // Скорость пульсации
+
+  // Ограничиваем длительность подсказки (5 секунд)
+  if (m_hintClock.getElapsedTime().asSeconds() > 5.0f) {
+      clearHint();
+      return;
+  }
+
+  // Для анимации в этой реализации не используются дополнительные методы карт и стопок.
+  // Вместо этого создаем временный эффект при отрисовке (см. метод draw)
 }
 
 void Game::useHint() {

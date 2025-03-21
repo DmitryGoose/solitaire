@@ -151,6 +151,9 @@ public:
     void clearHint();
     bool isShowingHint() const { return m_showingHint; }
 
+    bool hasPendingVictory() const { return m_pendingVictory; }
+    void resetPendingVictory() { m_pendingVictory = false; }
+
 private:
     // Поля для системы подсказок
     std::shared_ptr<Card> m_hintSourceCard = nullptr;
@@ -199,6 +202,8 @@ private:
     // Поддержка двойного клика
     sf::Clock m_doubleClickClock;
     std::shared_ptr<Card> m_lastClickedCard;
+
+    bool m_pendingVictory = false;
 };
 
 #endif // GAME_HPP

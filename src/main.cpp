@@ -184,44 +184,6 @@ int main() {
         }
     });
 
-    game.addObserver([&stateManager, &timer, &scoreSystem, &statsManager, audioAvailable]() {
-        try {
-            static bool victoryHandled = false;
-
-            // Предотвращаем повторное выполнение
-            if (victoryHandled) {
-                std::cout << "Наблюдатель победы уже был вызван ранее, пропускаем..." << std::endl;
-                return;
-            }
-
-            victoryHandled = true;
-
-            // Stop timer
-            if (timer) timer->pause();
-
-            // Add completion bonus
-            if (scoreSystem && timer) {
-                scoreSystem->addCompletionBonus(timer->getElapsedSeconds());
-            }
-
-            // Update statistics
-            statsManager.gameCompleted(true);
-
-            // Меняем состояние безопасно
-            std::cout << "Меняем состояние на VictoryState..." << std::endl;
-            if (AppContext::stateManager) {
-                sf::sleep(sf::milliseconds(100)); // Небольшая пауза перед сменой состояния
-                AppContext::stateManager->changeState(std::make_unique<VictoryState>());
-                std::cout << "Состояние успешно изменено" << std::endl;
-                sf::sleep(sf::milliseconds(50)); // Пауза после смены состояния
-            }
-        } catch (const std::exception& e) {
-            std::cerr << "Ошибка в наблюдателе победы: " << e.what() << std::endl;
-        } catch (...) {
-            std::cerr << "Неизвестная ошибка в наблюдателе победы" << std::endl;
-        }
-    });
-
     // Game loop
     sf::Clock clock;
     bool gameRunning = true;
@@ -344,6 +306,52 @@ int main() {
                 if (stateManager.getCurrentState()) {
                     stateManager.handleEvent(window, event, game);
                 }
+            }
+
+                        // Проверка победы (добавить ЗДЕСЬ)
+            if (game.hasPendingVictory()) {
+                // Сбрасываем флаг победы
+                game.resetPendingVictory();
+
+                // Останавливаем таймер
+                if (timer) timer->pause();
+
+                // Добавляем бонус за завершение
+                if (scoreSystem && timer) {
+                    scoreSystem->addCompletionBonus(timer->getElapsedSeconds());
+                }
+
+                // Обновляем статистику
+                StatsManager::getInstance().gameCompleted(true);
+
+                // Небольшая пауза для стабилизации состояния
+                sf::sleep(sf::milliseconds(300));
+
+                // Переходим на экран победы
+                stateManager.changeState(std::make_unique<VictoryState>());
+            }
+
+            // Проверка победы (добавить ЗДЕСЬ)
+            if (game.hasPendingVictory()) {
+                // Сбрасываем флаг победы
+                game.resetPendingVictory();
+
+                // Останавливаем таймер
+                if (timer) timer->pause();
+
+                // Добавляем бонус за завершение
+                if (scoreSystem && timer) {
+                    scoreSystem->addCompletionBonus(timer->getElapsedSeconds());
+                }
+
+                // Обновляем статистику
+                StatsManager::getInstance().gameCompleted(true);
+
+                // Небольшая пауза для стабилизации состояния
+                sf::sleep(sf::milliseconds(300));
+
+                // Переходим на экран победы
+                stateManager.changeState(std::make_unique<VictoryState>());
             }
 
             // Update timer
